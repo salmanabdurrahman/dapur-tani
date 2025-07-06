@@ -1,0 +1,70 @@
+<header x-data="{ mobileMenuOpen: false }" class="fixed top-0 z-40 w-full border-b border-slate-200 bg-white/80 backdrop-blur-lg">
+    <div class="container mx-auto px-4">
+        <div class="flex h-20 items-center justify-between">
+            <a href="{{ route('home') }}" class="flex items-center">
+                <span class="text-primary-600 text-2xl font-extrabold">Dapur Tani</span>
+            </a>
+            <div class="hidden lg:flex lg:items-center lg:space-x-4">
+                <a href="{{ route('home') }}"
+                    class="text-dark hover:text-primary-600 px-3 py-2 font-semibold transition-colors">Beranda</a>
+                <div x-data="{ dropdownOpen: false }" class="relative">
+                    <button @click="dropdownOpen = !dropdownOpen"
+                        class="text-dark hover:text-primary-600 flex items-center px-3 py-2 font-semibold transition-colors">
+                        Kategori
+                        <svg :class="{ 'rotate-180': dropdownOpen }" class="ml-1 h-5 w-5 transition-transform"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div x-show="dropdownOpen" @click.away="dropdownOpen = false"
+                        class="absolute top-full mt-2 w-56 rounded-xl border border-slate-100 bg-white py-2 shadow-lg"
+                        x-transition>
+                        <a href="#" class="hover:text-primary-600 block px-4 py-2 hover:bg-slate-50">Sayuran
+                            Segar</a>
+                        <a href="#"
+                            class="hover:text-primary-600 block px-4 py-2 hover:bg-slate-50">Buah-buahan</a>
+                        <a href="#" class="hover:text-primary-600 block px-4 py-2 hover:bg-slate-50">Daging &
+                            Unggas</a>
+                        <a href="#" class="hover:text-primary-600 block px-4 py-2 hover:bg-slate-50">Bumbu
+                            Dapur</a>
+                    </div>
+                </div>
+                <a href="#"
+                    class="text-dark hover:text-primary-600 px-3 py-2 font-semibold transition-colors">Jadi Pemasok</a>
+                <a href="#"
+                    class="text-dark hover:text-primary-600 px-3 py-2 font-semibold transition-colors">Tentang Kami</a>
+            </div>
+            <div class="hidden items-center space-x-2 lg:flex">
+                <a href="#"
+                    class="text-dark rounded-lg px-5 py-2.5 font-bold transition-colors hover:bg-slate-100">Masuk</a>
+                <a href="#"
+                    class="bg-primary-600 hover:bg-primary-700 rounded-lg px-5 py-2.5 font-bold text-white shadow-sm transition-colors hover:shadow-md">Daftar</a>
+            </div>
+            <div class="lg:hidden">
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-dark">
+                    <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div x-show="mobileMenuOpen" x-cloak class="border-t border-slate-200 bg-white lg:hidden" x-transition>
+        <div class="space-y-2 px-4 py-4">
+            <a href="{{ route('home') }}"
+                class="text-dark block rounded-md px-4 py-2 font-semibold hover:bg-slate-100">Beranda</a>
+            <a href="#" class="text-dark block rounded-md px-4 py-2 font-semibold hover:bg-slate-100">Kategori</a>
+            <a href="#" class="text-dark block rounded-md px-4 py-2 font-semibold hover:bg-slate-100">Jadi
+                Pemasok</a>
+            <a href="#" class="text-dark block rounded-md px-4 py-2 font-semibold hover:bg-slate-100">Tentang
+                Kami</a>
+        </div>
+        <div class="space-y-3 border-t border-slate-200 px-4 py-4">
+            <a href="#"
+                class="text-dark block w-full rounded-lg bg-slate-100 px-5 py-2.5 text-center font-bold hover:bg-slate-200">Masuk</a>
+            <a href="#"
+                class="bg-primary-600 hover:bg-primary-700 block w-full rounded-lg px-5 py-2.5 text-center font-bold text-white">Daftar</a>
+        </div>
+    </div>
+</header>
