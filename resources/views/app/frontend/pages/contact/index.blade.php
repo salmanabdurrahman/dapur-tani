@@ -74,33 +74,46 @@
                         <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-200">
                             <h2 class="text-2xl font-bold text-dark mb-1">Kirimkan Pesan</h2>
                             <p class="text-slate-500 mb-6">Tim kami akan merespon pesan Anda secepatnya.</p>
-                            <form action="#" method="POST" class="space-y-5">
+                            <form action="{{ route('contact.store') }}" method="POST" class="space-y-5">
                                 @csrf
                                 <div class="grid sm:grid-cols-2 gap-5">
                                     <div>
                                         <label for="name" class="font-semibold text-dark">Nama Lengkap</label>
-                                        <input type="text" id="name" placeholder="Salman Abdurrahman"
+                                        <input type="text" id="name" name="name" placeholder="Salman Abdurrahman"
                                             class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
                                             required autofocus>
+                                        @error('name')
+                                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div>
                                         <label for="email" class="font-semibold text-dark">Alamat Email</label>
-                                        <input type="email" id="email" placeholder="cs@dapurtani.com"
+                                        <input type="email" id="email" name="email" placeholder="cs@dapurtani.com"
                                             class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
                                             required>
+                                        @error('email')
+                                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div>
                                     <label for="subject" class="font-semibold text-dark">Subjek</label>
-                                    <input type="text" id="subject" placeholder="Contoh: Penawaran Kerjasama"
+                                    <input type="text" id="subject" name="subject"
+                                        placeholder="Contoh: Penawaran Kerjasama"
                                         class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
                                         required>
+                                    @error('subject')
+                                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div>
                                     <label for="message" class="font-semibold text-dark">Pesan Anda</label>
-                                    <textarea id="message" rows="5" placeholder="Tuliskan pesan Anda di sini..."
+                                    <textarea id="message" name="message" rows="5" placeholder="Tuliskan pesan Anda di sini..."
                                         class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
                                         required></textarea>
+                                    @error('message')
+                                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <button type="submit"
                                     class="w-full bg-primary-600 text-white py-3.5 rounded-lg text-lg font-bold hover:bg-primary-700 transition-colors shadow-lg hover:shadow-primary-300">Kirim
