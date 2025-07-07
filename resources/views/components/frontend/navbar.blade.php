@@ -29,16 +29,14 @@
                             Dapur</a>
                     </div>
                 </div>
-                <a href="#"
-                    class="text-dark hover:text-primary-600 px-3 py-2 font-semibold transition-colors">Jadi Pemasok</a>
                 <a href="{{ route('about-us') }}"
                     class="px-3 py-2 font-semibold transition-colors {{ request()->is('about-us') ? 'text-primary-600' : 'text-dark hover:text-primary-600' }}">Tentang
                     Kami</a>
             </div>
             <div class="hidden items-center space-x-2 lg:flex">
-                <a href="#"
+                <a href="{{ route('auth.create', ['o' => 'login']) }}"
                     class="text-dark rounded-lg px-5 py-2.5 font-bold transition-colors hover:bg-slate-100">Masuk</a>
-                <a href="#"
+                <a href="{{ route('auth.create', ['o' => 'register']) }}"
                     class="bg-primary-600 hover:bg-primary-700 rounded-lg px-5 py-2.5 font-bold text-white shadow-sm transition-colors hover:shadow-md">Daftar</a>
             </div>
             <div class="lg:hidden">
@@ -54,17 +52,17 @@
     <div x-show="mobileMenuOpen" x-cloak class="border-t border-slate-200 bg-white lg:hidden" x-transition>
         <div class="space-y-2 px-4 py-4">
             <a href="{{ route('home') }}"
-                class="text-dark block rounded-md px-4 py-2 font-semibold hover:bg-slate-100">Beranda</a>
-            <a href="#" class="text-dark block rounded-md px-4 py-2 font-semibold hover:bg-slate-100">Kategori</a>
-            <a href="#" class="text-dark block rounded-md px-4 py-2 font-semibold hover:bg-slate-100">Jadi
-                Pemasok</a>
-            <a href="#" class="text-dark block rounded-md px-4 py-2 font-semibold hover:bg-slate-100">Tentang
+                class="block rounded-md px-4 py-2 font-semibold {{ request()->is('/') ? 'text-primary-600' : 'hover:text-primary-600 text-dark' }}">Beranda</a>
+            <a href="{{ route('products.index') }}"
+                class="block rounded-md px-4 py-2 font-semibold {{ request()->is('products*') ? 'text-primary-600' : 'hover:text-primary-600 text-dark' }}">Kategori</a>
+            <a href="{{ route('about-us') }}"
+                class=" block rounded-md px-4 py-2 font-semibold {{ request()->is('about-us') ? 'text-primary-600' : 'hover:text-primary-600 text-dark' }}">Tentang
                 Kami</a>
         </div>
         <div class="space-y-3 border-t border-slate-200 px-4 py-4">
-            <a href="#"
+            <a href="{{ route('auth.create', ['o' => 'login']) }}"
                 class="text-dark block w-full rounded-lg bg-slate-100 px-5 py-2.5 text-center font-bold hover:bg-slate-200">Masuk</a>
-            <a href="#"
+            <a href="{{ route('auth.create', ['o' => 'register']) }}"
                 class="bg-primary-600 hover:bg-primary-700 block w-full rounded-lg px-5 py-2.5 text-center font-bold text-white">Daftar</a>
         </div>
     </div>
