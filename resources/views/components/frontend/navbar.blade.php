@@ -6,10 +6,10 @@
             </a>
             <div class="hidden lg:flex lg:items-center lg:space-x-4">
                 <a href="{{ route('home') }}"
-                    class="text-dark hover:text-primary-600 px-3 py-2 font-semibold transition-colors">Beranda</a>
+                    class="px-3 py-2 font-semibold transition-colors {{ request()->is('/') ? 'text-primary-600' : 'text-dark hover:text-primary-600' }}">Beranda</a>
                 <div x-data="{ dropdownOpen: false }" class="relative">
                     <button @click="dropdownOpen = !dropdownOpen"
-                        class="text-dark hover:text-primary-600 flex items-center px-3 py-2 font-semibold transition-colors">
+                        class="flex items-center px-3 py-2 font-semibold transition-colors {{ request()->is('products*') ? 'text-primary-600' : 'text-dark hover:text-primary-600' }}">
                         Kategori
                         <svg :class="{ 'rotate-180': dropdownOpen }" class="ml-1 h-5 w-5 transition-transform"
                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -31,8 +31,9 @@
                 </div>
                 <a href="#"
                     class="text-dark hover:text-primary-600 px-3 py-2 font-semibold transition-colors">Jadi Pemasok</a>
-                <a href="#"
-                    class="text-dark hover:text-primary-600 px-3 py-2 font-semibold transition-colors">Tentang Kami</a>
+                <a href="{{ route('about-us') }}"
+                    class="px-3 py-2 font-semibold transition-colors {{ request()->is('about-us') ? 'text-primary-600' : 'text-dark hover:text-primary-600' }}">Tentang
+                    Kami</a>
             </div>
             <div class="hidden items-center space-x-2 lg:flex">
                 <a href="#"
