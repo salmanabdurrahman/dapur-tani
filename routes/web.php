@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\BuyerAuthController;
+use App\Http\Controllers\Buyer\DashboardController;
 use App\Http\Controllers\Frontend\AboutUsController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\HomeController;
@@ -18,4 +19,22 @@ Route::resource('products', ProductController::class)->only(['index', 'show']);
 Route::get('/about-us', [AboutUsController::class, 'index'])->name('about-us');
 Route::resource('contact', ContactController::class)->only(['index', 'store']);
 
-Route::get('/auth', [BuyerAuthController::class, 'create'])->name('auth.create');
+/*
+ * ---------------------------------------------------------------------------------------
+ * Auth Routes
+ * ---------------------------------------------------------------------------------------
+ */
+
+Route::middleware('guest')->group(function () {
+    Route::get('/auth', [BuyerAuthController::class, 'create'])->name('auth.create');
+});
+
+/*
+ * ---------------------------------------------------------------------------------------
+ * Buyer Dashboard Routes
+ * ---------------------------------------------------------------------------------------
+ */
+
+Route::prefix('buyer')->name('buyer.')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+});

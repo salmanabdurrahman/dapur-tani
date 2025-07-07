@@ -12,7 +12,7 @@
             <div class="col-span-1 md:col-span-2">
                 <h4 class="text-dark mb-4 font-bold">Platform</h4>
                 <ul class="space-y-3 text-sm text-slate-600">
-                    <li><a href="#" class="hover:text-primary-600">Produk</a></li>
+                    <li><a href="{{ route('products.index') }}" class="hover:text-primary-600">Produk</a></li>
                     <li><a href="#" class="hover:text-primary-600">Jadi Pemasok</a></li>
                     <li><a href="#" class="hover:text-primary-600">Fitur</a></li>
                 </ul>
@@ -20,8 +20,8 @@
             <div class="col-span-1 md:col-span-2">
                 <h4 class="text-dark mb-4 font-bold">Perusahaan</h4>
                 <ul class="space-y-3 text-sm text-slate-600">
-                    <li><a href="#" class="hover:text-primary-600">Tentang Kami</a></li>
-                    <li><a href="#" class="hover:text-primary-600">Blog</a></li>
+                    <li><a href="{{ route('about-us') }}" class="hover:text-primary-600">Tentang</a></li>
+                    <li><a href="{{ route('contact.index') }}" class="hover:text-primary-600">Hubungi Kami</a></li>
                 </ul>
             </div>
             <div class="col-span-2 md:col-span-4">
