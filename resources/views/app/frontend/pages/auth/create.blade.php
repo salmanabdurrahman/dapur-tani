@@ -3,7 +3,7 @@
 @section('title', $title ?? 'Masuk ke Akun Anda - Dapur Tani')
 
 @section('content')
-    <main class="max-w-5xl mx-auto py-12 md:py-16 my-20">
+    <main class="max-w-5xl mx-auto py-12 md:py-16 lg:py-24 my-20">
         <section class="grid lg:grid-cols-2 gap-0 shadow-2xl rounded-lg overflow-hidden">
             <div
                 class="hidden lg:flex flex-col justify-between p-12 bg-gradient-to-br from-primary-600 to-primary-700 text-white">
@@ -56,8 +56,8 @@
                             <div class="relative mt-2">
                                 <i
                                     class='bx bx-envelope absolute left-4 top-1/2 -translate-y-1/2 text-xl text-slate-400'></i>
-                                <input type="email" id="login-email" placeholder="contoh@bisnis.com"
-                                    class="w-full pl-12 pr-4 py-3 border-2 border-slate-200 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
+                                <input type="email" id="login-email" placeholder="salman@gmail.com"
+                                    class="w-full pl-12 pr-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
                                     required autofocus>
                             </div>
                         </div>
@@ -70,8 +70,8 @@
                             <div class="relative mt-2">
                                 <i
                                     class='bx bx-lock-alt absolute left-4 top-1/2 -translate-y-1/2 text-xl text-slate-400'></i>
-                                <input type="password" id="login-password" placeholder="••••••••"
-                                    class="w-full pl-12 pr-4 py-3 border-2 border-slate-200 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
+                                <input type="password" id="login-password" placeholder="Password Anda"
+                                    class="w-full pl-12 pr-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
                                     required>
                             </div>
                         </div>
@@ -89,8 +89,8 @@
                             <label for="register-name" class="font-semibold text-dark">Nama Lengkap</label>
                             <div class="relative mt-2">
                                 <i class='bx bx-user absolute left-4 top-1/2 -translate-y-1/2 text-xl text-slate-400'></i>
-                                <input type="text" id="register-name" placeholder="John Doe"
-                                    class="w-full pl-12 pr-4 py-3 border-2 border-slate-200 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
+                                <input type="text" id="register-name" placeholder="Salman Abdurrahman"
+                                    class="w-full pl-12 pr-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
                                     required autofocus>
                             </div>
                         </div>
@@ -99,8 +99,8 @@
                             <div class="relative mt-2">
                                 <i
                                     class='bx bx-envelope absolute left-4 top-1/2 -translate-y-1/2 text-xl text-slate-400'></i>
-                                <input type="email" id="register-email" placeholder="contoh@bisnis.com"
-                                    class="w-full pl-12 pr-4 py-3 border-2 border-slate-200 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
+                                <input type="email" id="register-email" placeholder="salman@gmail.com"
+                                    class="w-full pl-12 pr-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
                                     required>
                             </div>
                         </div>
@@ -110,7 +110,7 @@
                                 <i
                                     class='bx bx-lock-alt absolute left-4 top-1/2 -translate-y-1/2 text-xl text-slate-400'></i>
                                 <input type="password" id="register-password" placeholder="Minimal 8 karakter"
-                                    class="w-full pl-12 pr-4 py-3 border-2 border-slate-200 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
+                                    class="w-full pl-12 pr-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
                                     required>
                             </div>
                         </div>

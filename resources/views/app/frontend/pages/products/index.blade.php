@@ -4,15 +4,8 @@
 
 @section('content')
     <main class="py-12 md:py-16 my-20">
-        <section class="container mx-auto px-4">
-            <div class="mb-10 text-center md:text-left">
-                <nav class="text-sm font-medium text-slate-500 mb-2">
-                    <a href="{{ route('home') }}" class="hover:text-primary-600">Home</a>
-                    <span class="mx-2">/</span>
-                    <span class="text-dark font-semibold">Semua Produk</span>
-                </nav>
-                <h1 class="text-4xl md:text-5xl font-extrabold text-dark tracking-tight">Jelajahi Semua Produk</h1>
-            </div>
+        <section class="container mx-auto px-4 relative py-10">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-dark tracking-tight mb-10">Jelajahi Semua Produk</h1>
             <div class="flex flex-col lg:flex-row gap-12 lg:gap-8 lg:items-start" x-data="{ filtersOpen: false }">
                 <div x-show="filtersOpen" x-cloak x-transition:enter="transition-opacity ease-linear duration-300"
                     x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
@@ -82,12 +75,12 @@
                                     <div class="flex items-center space-x-2">
                                         <span class="text-sm text-slate-500">Rp</span>
                                         <input type="number" placeholder="Min"
-                                            class="w-full border-slate-300 rounded-md text-sm focus:ring-primary-500 focus:border-primary-500">
+                                            class="w-full border-slate-300 rounded-md text-sm focus:ring-primary-500 focus:border-primary-500 focus:outline-none">
                                     </div>
                                     <div class="flex items-center space-x-2">
                                         <span class="text-sm text-slate-500">Rp</span>
                                         <input type="number" placeholder="Max"
-                                            class="w-full border-slate-300 rounded-md text-sm focus:ring-primary-500 focus:border-primary-500">
+                                            class="w-full border-slate-300 rounded-md text-sm focus:ring-primary-500 focus:border-primary-500 focus:outline-none">
                                     </div>
                                 </div>
                             </div>

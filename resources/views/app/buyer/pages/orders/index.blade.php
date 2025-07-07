@@ -27,6 +27,7 @@
             </div>
         </div>
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200" x-show="activeTab === 'semua'">
+            <h2 class="text-xl font-bold text-dark mb-4">Semua Pesanan</h2>
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead class="text-sm text-slate-500 font-semibold border-b-2 border-slate-200">
@@ -35,7 +36,7 @@
                             <th class="p-4">Tanggal</th>
                             <th class="p-4">Total</th>
                             <th class="p-4">Status</th>
-                            <th class="p-4 text-right">Aksi</th>
+                            <th class="p-4">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -46,7 +47,7 @@
                             <td class="p-4"><span
                                     class="bg-sky-100 text-sky-600 font-semibold px-3 py-1 text-xs rounded-full">Dikirim</span>
                             </td>
-                            <td class="p-4 text-right"><a href="#"
+                            <td class="p-4"><a href="#"
                                     class="text-primary-600 font-semibold hover:underline">Lihat Detail</a></td>
                         </tr>
                         <tr class="border-b border-slate-100 last:border-b-0">
@@ -56,7 +57,7 @@
                             <td class="p-4"><span
                                     class="bg-primary-100 text-primary-600 font-semibold px-3 py-1 text-xs rounded-full">Selesai</span>
                             </td>
-                            <td class="p-4 text-right"><a href="#"
+                            <td class="p-4"><a href="#"
                                     class="text-primary-600 font-semibold hover:underline">Lihat Detail</a></td>
                         </tr>
                         <tr class="border-b border-slate-100 last:border-b-0">
@@ -66,7 +67,7 @@
                             <td class="p-4"><span
                                     class="bg-amber-100 text-amber-600 font-semibold px-3 py-1 text-xs rounded-full">Diproses</span>
                             </td>
-                            <td class="p-4 text-right"><a href="#"
+                            <td class="p-4"><a href="#"
                                     class="text-primary-600 font-semibold hover:underline">Lihat Detail</a></td>
                         </tr>
                         <tr class="border-b border-slate-100 last:border-b-0">
@@ -76,7 +77,7 @@
                             <td class="p-4"><span
                                     class="bg-red-100 text-red-600 font-semibold px-3 py-1 text-xs rounded-full">Dibatalkan</span>
                             </td>
-                            <td class="p-4 text-right"><a href="#"
+                            <td class="p-4"><a href="#"
                                     class="text-primary-600 font-semibold hover:underline">Lihat Detail</a></td>
                         </tr>
                     </tbody>
@@ -93,6 +94,7 @@
             </nav>
         </div>
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200" x-show="activeTab === 'diproses'">
+            <h2 class="text-xl font-bold text-dark mb-4">Pesanan Diproses</h2>
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead class="text-sm text-slate-500 font-semibold border-b-2 border-slate-200">
@@ -101,7 +103,7 @@
                             <th class="p-4">Tanggal</th>
                             <th class="p-4">Total</th>
                             <th class="p-4">Status</th>
-                            <th class="p-4 text-right">Aksi</th>
+                            <th class="p-4">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -112,7 +114,7 @@
                             <td class="p-4"><span
                                     class="bg-amber-100 text-amber-600 font-semibold px-3 py-1 text-xs rounded-full">Diproses</span>
                             </td>
-                            <td class="p-4 text-right"><a href="#"
+                            <td class="p-4"><a href="#"
                                     class="text-primary-600 font-semibold hover:underline">Lihat Detail</a></td>
                         </tr>
                     </tbody>

@@ -4,14 +4,8 @@
 
 @section('content')
     <main class="py-12 md:py-16 my-20">
-        <section class="container mx-auto px-4">
-            <nav class="text-sm font-medium text-slate-500 mb-8">
-                <a href="{{ route('home') }}" class="hover:text-primary-600">Home</a>
-                <span class="mx-2">/</span>
-                <a href="{{ route('products.index') }}" class="hover:text-primary-600">Sayuran</a>
-                <span class="mx-2">/</span>
-                <span class="text-dark font-semibold">Tomat Ceri Organik</span>
-            </nav>
+        <section class="container mx-auto px-4 relative py-10">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-dark tracking-tight mb-10">Detail Tomat Ceri Organik</h1>
             <div class="grid lg:grid-cols-2 gap-12 lg:gap-16">
                 <div x-data="{ mainImage: 'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?q=80&w=1200' }">
                     <div class="mb-4 bg-white p-4 rounded-2xl shadow-lg border border-slate-200">
@@ -169,7 +163,8 @@
                         <div class="space-y-6">
                             <div class="border-b border-slate-200 pb-6">
                                 <div class="flex items-center mb-2">
-                                    <img src="https://i.pravatar.cc/40?u=1" class="w-10 h-10 rounded-full mr-3">
+                                    <img src="https://i.pravatar.cc/40?u=1" class="w-10 h-10 rounded-full mr-3"
+                                        loading="lazy">
                                     <div>
                                         <p class="font-bold text-dark">Chef Budi - Hotel Bintang Lima</p>
                                         <p class="text-sm text-slate-500 flex items-center">★★★★★</p>
@@ -181,7 +176,8 @@
                             </div>
                             <div class="border-b border-slate-200 pb-6">
                                 <div class="flex items-center mb-2">
-                                    <img src="https://i.pravatar.cc/40?u=4" class="w-10 h-10 rounded-full mr-3">
+                                    <img src="https://i.pravatar.cc/40?u=4" class="w-10 h-10 rounded-full mr-3"
+                                        loading="lazy">
                                     <div>
                                         <p class="font-bold text-dark">Rina - Dapur Sehat Cafe</p>
                                         <p class="text-sm text-slate-500 flex items-center">★★★★★</p>

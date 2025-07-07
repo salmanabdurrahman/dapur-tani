@@ -28,7 +28,7 @@
                 <div class="space-y-4">
                     <div class="flex items-start gap-4 border-b border-slate-100 pb-4">
                         <img src="https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?q=80&w=200" alt="Tomat"
-                            class="w-20 h-20 object-cover rounded-lg">
+                            class="w-20 h-20 object-cover rounded-lg" loading="lazy">
                         <div class="flex-grow">
                             <p class="font-bold text-dark">Tomat Ceri Organik</p>
                             <p class="text-sm text-slate-500">Rp 25.000 x 5 kg</p>
@@ -37,7 +37,7 @@
                     </div>
                     <div class="flex items-start gap-4 border-b border-slate-100 pb-4">
                         <img src="https://images.unsplash.com/photo-1587351177733-a037418a3e42?q=80&w=200" alt="Brokoli"
-                            class="w-20 h-20 object-cover rounded-lg">
+                            class="w-20 h-20 object-cover rounded-lg" loading="lazy">
                         <div class="flex-grow">
                             <p class="font-bold text-dark">Brokoli Hidroponik</p>
                             <p class="text-sm text-slate-500">Rp 18.000 x 10 kg</p>
@@ -46,7 +46,7 @@
                     </div>
                     <div class="flex items-start gap-4">
                         <img src="https://images.unsplash.com/photo-1628109635955-396a8a18357f?q=80&w=200" alt="Bawang"
-                            class="w-20 h-20 object-cover rounded-lg">
+                            class="w-20 h-20 object-cover rounded-lg" loading="lazy">
                         <div class="flex-grow">
                             <p class="font-bold text-dark">Bawang Merah Brebes</p>
                             <p class="text-sm text-slate-500">Rp 38.000 x 25 kg</p>

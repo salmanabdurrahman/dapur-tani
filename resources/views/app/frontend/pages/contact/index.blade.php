@@ -3,8 +3,8 @@
 @section('title', 'Hubungi Tim Kami - Dapur Tani')
 
 @section('content')
-    <main class="pt-20">
-        <section class="relative py-24 md:py-32">
+    <main class="my-20">
+        <section class="relative py-24">
             <div class="container mx-auto px-4 text-center">
                 <div class="max-w-3xl mx-auto">
                     <p class="font-semibold text-primary-600 text-lg">Hubungi Kami</p>
@@ -75,30 +75,31 @@
                             <h2 class="text-2xl font-bold text-dark mb-1">Kirimkan Pesan</h2>
                             <p class="text-slate-500 mb-6">Tim kami akan merespon pesan Anda secepatnya.</p>
                             <form action="#" method="POST" class="space-y-5">
+                                @csrf
                                 <div class="grid sm:grid-cols-2 gap-5">
                                     <div>
                                         <label for="name" class="font-semibold text-dark">Nama Lengkap</label>
-                                        <input type="text" id="name" placeholder="John Doe"
-                                            class="mt-2 w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
+                                        <input type="text" id="name" placeholder="Salman Abdurrahman"
+                                            class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
                                             required autofocus>
                                     </div>
                                     <div>
                                         <label for="email" class="font-semibold text-dark">Alamat Email</label>
-                                        <input type="email" id="email" placeholder="contoh@bisnis.com"
-                                            class="mt-2 w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
+                                        <input type="email" id="email" placeholder="cs@dapurtani.com"
+                                            class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
                                             required>
                                     </div>
                                 </div>
                                 <div>
                                     <label for="subject" class="font-semibold text-dark">Subjek</label>
                                     <input type="text" id="subject" placeholder="Contoh: Penawaran Kerjasama"
-                                        class="mt-2 w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
+                                        class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
                                         required>
                                 </div>
                                 <div>
                                     <label for="message" class="font-semibold text-dark">Pesan Anda</label>
                                     <textarea id="message" rows="5" placeholder="Tuliskan pesan Anda di sini..."
-                                        class="mt-2 w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
+                                        class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
                                         required></textarea>
                                 </div>
                                 <button type="submit"

@@ -11,7 +11,8 @@
         </a>
         <div class="relative" x-data="{ dropdownOpen: false }">
             <button @click="dropdownOpen = !dropdownOpen" class="flex items-center gap-3">
-                <img src="https://i.pravatar.cc/40?u=restoprime" alt="Avatar" class="w-10 h-10 rounded-full">
+                <img src="https://i.pravatar.cc/40?u=restoprime" alt="Avatar" class="w-10 h-10 rounded-full"
+                    loading="lazy">
                 <div class="hidden md:block text-left">
                     <p class="font-bold text-dark text-sm">Resto Prime</p>
                     <p class="text-xs text-slate-500">Buyer Account</p>
