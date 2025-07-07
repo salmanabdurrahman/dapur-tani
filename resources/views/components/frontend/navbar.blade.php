@@ -30,7 +30,9 @@
                     </div>
                 </div>
                 <a href="{{ route('about-us') }}"
-                    class="px-3 py-2 font-semibold transition-colors {{ request()->is('about-us') ? 'text-primary-600' : 'text-dark hover:text-primary-600' }}">Tentang
+                    class="px-3 py-2 font-semibold transition-colors {{ request()->is('about-us') ? 'text-primary-600' : 'text-dark hover:text-primary-600' }}">Tentang</a>
+                <a href="{{ route('contact.index') }}"
+                    class="px-3 py-2 font-semibold transition-colors {{ request()->is('contact') ? 'text-primary-600' : 'text-dark hover:text-primary-600' }}">Hubungi
                     Kami</a>
             </div>
             <div class="hidden items-center space-x-2 lg:flex">
@@ -56,7 +58,9 @@
             <a href="{{ route('products.index') }}"
                 class="block rounded-md px-4 py-2 font-semibold {{ request()->is('products*') ? 'text-primary-600' : 'hover:text-primary-600 text-dark' }}">Kategori</a>
             <a href="{{ route('about-us') }}"
-                class=" block rounded-md px-4 py-2 font-semibold {{ request()->is('about-us') ? 'text-primary-600' : 'hover:text-primary-600 text-dark' }}">Tentang
+                class=" block rounded-md px-4 py-2 font-semibold {{ request()->is('about-us') ? 'text-primary-600' : 'hover:text-primary-600 text-dark' }}">Tentang</a>
+            <a href="{{ route('contact.index') }}"
+                class="block rounded-md px-4 py-2 font-semibold {{ request()->is('contact') ? 'text-primary-600' : 'hover:text-primary-600 text-dark' }}">Hubungi
                 Kami</a>
         </div>
         <div class="space-y-3 border-t border-slate-200 px-4 py-4">

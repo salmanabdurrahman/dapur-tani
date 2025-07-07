@@ -1,6 +1,6 @@
 @extends('app.frontend.layouts.app')
 
-@section('title', 'Beranda - Dapur Tani')
+@section('title', 'Platform Pasokan Pangan B2B untuk Bisnis Kuliner - Dapur Tani')
 
 @push('styles')
     <style>
