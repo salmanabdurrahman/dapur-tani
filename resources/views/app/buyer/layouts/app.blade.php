@@ -35,7 +35,10 @@
             <x-buyer.header />
 
             {{-- Content --}}
-            @yield('content')
+            <main class="flex-grow p-8 md:p-10">
+                @yield('content')
+            </main>
+
         </section>
     </div>
 

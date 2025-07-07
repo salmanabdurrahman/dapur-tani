@@ -13,7 +13,7 @@
                 <i class='bx bxs-dashboard text-xl'></i>
                 <span>Dashboard</span>
             </a>
-            <a href="#"
+            <a href="{{ route('buyer.orders.index') }}"
                 class="flex items-center gap-3 px-4 py-2.5 text-slate-600 font-semibold rounded-lg hover:bg-slate-100 hover:text-dark">
                 <i class='bx bxs-package text-xl'></i>
                 <span>Pesanan Saya</span>

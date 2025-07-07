@@ -21,6 +21,7 @@
             <div x-show="dropdownOpen" @click.away="dropdownOpen = false"
                 class="absolute top-full mt-2 right-0 w-48 bg-white rounded-xl shadow-lg border border-slate-100 py-2"
                 x-transition>
+                <a href="{{ route('home') }}" class="block px-4 py-2 hover:bg-slate-50">Beranda</a>
                 <a href="#" class="block px-4 py-2 hover:bg-slate-50">Profil Saya</a>
                 <a href="#" class="block px-4 py-2 text-red-500 hover:bg-red-50">Keluar</a>
             </div>

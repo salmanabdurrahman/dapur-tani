@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\BuyerAuthController;
 use App\Http\Controllers\Buyer\DashboardController;
+use App\Http\Controllers\Buyer\OrderController;
 use App\Http\Controllers\Frontend\AboutUsController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\HomeController;
@@ -37,4 +38,5 @@ Route::middleware('guest')->group(function () {
 
 Route::prefix('buyer')->name('buyer.')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('orders', OrderController::class)->only(['index', 'show']);
 });
