@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\BuyerAuthController;
 use App\Http\Controllers\Buyer\DashboardController;
 use App\Http\Controllers\Buyer\OrderController;
+use App\Http\Controllers\Buyer\ProfileController;
 use App\Http\Controllers\Frontend\AboutUsController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\HomeController;
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::resource('products', ProductController::class)->only(['index', 'show']);
-Route::get('/about-us', [AboutUsController::class, 'index'])->name('about-us');
+Route::get('about-us', [AboutUsController::class, 'index'])->name('about-us');
 Route::resource('contact', ContactController::class)->only(['index', 'store']);
 
 /*
@@ -27,7 +28,7 @@ Route::resource('contact', ContactController::class)->only(['index', 'store']);
  */
 
 Route::middleware('guest')->group(function () {
-    Route::get('/auth', [BuyerAuthController::class, 'create'])->name('auth.create');
+    Route::get('auth', [BuyerAuthController::class, 'create'])->name('auth.create');
 });
 
 /*
@@ -39,4 +40,5 @@ Route::middleware('guest')->group(function () {
 Route::prefix('buyer')->name('buyer.')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('orders', OrderController::class)->only(['index', 'show']);
+    Route::get('settings', [ProfileController::class, 'edit'])->name('settings.edit');
 });
