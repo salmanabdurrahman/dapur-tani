@@ -243,7 +243,7 @@
                                 <span>Kelola pesanan dan stok dengan dashboard canggih.</span>
                             </li>
                         </ul>
-                        <a href="#"
+                        <a href="/supplier/register"
                             class="mt-8 inline-block rounded-lg bg-amber-500 px-6 py-2.5 font-bold text-white transition-colors hover:bg-amber-600">
                             Jadi Pemasok
                         </a>

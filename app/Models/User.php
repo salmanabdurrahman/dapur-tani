@@ -77,6 +77,13 @@ class User extends Authenticatable implements FilamentUser
         return false;
     }
 
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->profile->profile_photo_path
+            ? asset('storage/' . $this->profile->profile_photo_path)
+            : null;
+    }
+
     public function profile(): HasOne
     {
         return $this->hasOne(UserProfile::class);

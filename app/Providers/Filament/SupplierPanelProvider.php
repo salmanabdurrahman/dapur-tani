@@ -28,7 +28,6 @@ class SupplierPanelProvider extends PanelProvider
             ->path('supplier')
             ->login()
             ->registration(Register::class)
-            ->profile()
             ->colors([
                 'primary' => Color::hex('#22c55e'),
             ])
@@ -39,8 +38,8 @@ class SupplierPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Supplier/Widgets'), for: 'App\\Filament\\Supplier\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                // Widgets\AccountWidget::class,
+                // Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

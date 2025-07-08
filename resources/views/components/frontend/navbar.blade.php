@@ -35,7 +35,10 @@
                     class="px-3 py-2 font-semibold transition-colors {{ request()->is('contact') ? 'text-primary-600' : 'text-dark hover:text-primary-600' }}">Hubungi
                     Kami</a>
             </div>
-            @auth
+            @if (Auth::check() && Auth::user()->role->value === 'supplier')
+                <a href="/supplier"
+                    class="bg-primary-600 hover:bg-primary-700 rounded-lg px-5 py-2.5 font-bold text-white shadow-sm transition-colors hover:shadow-md hidden lg:block">Dashboard</a>
+            @elseif (Auth::check() && Auth::user()->role->value === 'buyer')
                 <a href="{{ route('buyer.dashboard') }}"
                     class="bg-primary-600 hover:bg-primary-700 rounded-lg px-5 py-2.5 font-bold text-white shadow-sm transition-colors hover:shadow-md hidden lg:block">Dashboard</a>
             @else
@@ -45,7 +48,7 @@
                     <a href="{{ route('auth.create', ['o' => 'register']) }}"
                         class="bg-primary-600 hover:bg-primary-700 rounded-lg px-5 py-2.5 font-bold text-white shadow-sm transition-colors hover:shadow-md">Daftar</a>
                 </div>
-            @endauth
+            @endif
             <div class="lg:hidden">
                 <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-dark">
                     <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -68,7 +71,12 @@
                 class="block rounded-md px-4 py-2 font-semibold {{ request()->is('contact') ? 'text-primary-600' : 'hover:text-primary-600 text-dark' }}">Hubungi
                 Kami</a>
         </div>
-        @auth
+        @if (Auth::check() && Auth::user()->role->value === 'supplier')
+            <div class="space-y-3 border-t border-slate-200 px-4 py-4">
+                <a href="/supplier"
+                    class="bg-primary-600 hover:bg-primary-700 block w-full rounded-lg px-5 py-2.5 text-center font-bold text-white">Dashboard</a>
+            </div>
+        @elseif (Auth::check() && Auth::user()->role->value === 'buyer')
             <div class="space-y-3 border-t border-slate-200 px-4 py-4">
                 <a href="{{ route('buyer.dashboard') }}"
                     class="bg-primary-600 hover:bg-primary-700 block w-full rounded-lg px-5 py-2.5 text-center font-bold text-white">Dashboard</a>
@@ -80,6 +88,6 @@
                 <a href="{{ route('auth.create', ['o' => 'register']) }}"
                     class="bg-primary-600 hover:bg-primary-700 block w-full rounded-lg px-5 py-2.5 text-center font-bold text-white">Daftar</a>
             </div>
-        @endauth
+        @endif
     </div>
 </header>

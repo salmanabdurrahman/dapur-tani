@@ -21,9 +21,11 @@ class EditProfile extends Page implements HasForms
     use InteractsWithForms;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
+    protected static ?string $navigationGroup = 'Akun';
     protected static string $view = 'filament.supplier.pages.edit-profile';
     protected static ?string $navigationLabel = 'Pengaturan Profil';
     protected static ?string $title = 'Pengaturan Profil';
+    protected static ?int $navigationSort = 4;
 
     public ?array $profileData = [];
     public ?array $passwordData = [];

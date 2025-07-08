@@ -165,7 +165,8 @@
                 <div class="mt-8 text-center">
                     <p class="text-sm">
                         Anda seorang pemasok?
-                        <a href="#" class="font-bold text-primary-600 hover:underline">Masuk atau Daftar di sini</a>
+                        <a href="/supplier/login" class="font-bold text-primary-600 hover:underline">Masuk atau Daftar di
+                            sini</a>
                     </p>
                 </div>
             </div>

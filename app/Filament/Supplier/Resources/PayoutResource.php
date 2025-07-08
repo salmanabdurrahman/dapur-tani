@@ -20,8 +20,10 @@ class PayoutResource extends Resource
     protected static ?string $model = Payout::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
+    protected static ?string $navigationGroup = 'Keuangan';
     protected static ?string $navigationLabel = 'Pendapatan & Payout';
     protected static ?string $pluralModelLabel = 'Pendapatan';
+    protected static ?int $navigationSort = 3;
 
     public static function canEdit(Model $record): bool
     {
