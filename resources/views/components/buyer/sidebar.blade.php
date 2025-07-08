@@ -24,13 +24,14 @@
                 <span>Pengaturan Akun</span>
             </a>
         </nav>
-        <div class="p-4 border-t border-slate-200">
-            <a href="#"
-                class="flex items-center gap-3 px-4 py-2.5 text-slate-600 font-semibold rounded-lg hover:bg-red-50 hover:text-red-600">
+        <form method="POST" action="{{ route('auth.logout') }}" class="p-4 border-t border-slate-200 w-full">
+            @csrf
+            <button type="submit"
+                class="flex items-center gap-3 px-4 py-2.5 text-slate-600 font-semibold rounded-lg hover:bg-red-50 hover:text-red-600 w-full">
                 <i class='bx bx-log-out text-xl'></i>
                 <span>Keluar</span>
-            </a>
-        </div>
+            </button>
+        </form>
     </div>
 </aside>
 <section x-show="sidebarOpen" @click="sidebarOpen = false" class="fixed inset-0 bg-black/30 z-40 lg:hidden" x-cloak>

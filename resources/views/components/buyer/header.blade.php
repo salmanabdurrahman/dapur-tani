@@ -14,7 +14,7 @@
                 <img src="https://i.pravatar.cc/40?u=restoprime" alt="Avatar" class="w-10 h-10 rounded-full"
                     loading="lazy">
                 <div class="hidden md:block text-left">
-                    <p class="font-bold text-dark text-sm">Resto Prime</p>
+                    <p class="font-bold text-dark text-sm">{{ auth()->user()->name }}</p>
                     <p class="text-xs text-slate-500">Buyer Account</p>
                 </div>
                 <i class='bx bx-chevron-down text-lg text-slate-500'></i>
@@ -24,7 +24,11 @@
                 x-transition>
                 <a href="{{ route('home') }}" class="block px-4 py-2 hover:bg-slate-50">Beranda</a>
                 <a href="#" class="block px-4 py-2 hover:bg-slate-50">Profil Saya</a>
-                <a href="#" class="block px-4 py-2 text-red-500 hover:bg-red-50">Keluar</a>
+                <form action="{{ route('auth.logout') }}" method="post">
+                    @csrf
+                    <button type="submit"
+                        class="block px-4 py-2 text-red-500 hover:bg-red-50 w-full text-left">Keluar</button>
+                </form>
             </div>
         </div>
     </div>

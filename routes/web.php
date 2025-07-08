@@ -31,7 +31,12 @@ Route::post('subscriptions', [SubscriptionController::class, 'store'])->name('su
 
 Route::middleware('guest')->group(function () {
     Route::get('auth', [BuyerAuthController::class, 'create'])->name('auth.create');
+    Route::post('register', [BuyerAuthController::class, 'store'])->name('auth.store');
+    Route::post('login', [BuyerAuthController::class, 'login'])->name('auth.login');
 });
+
+Route::post('logout', [BuyerAuthController::class, 'logout'])->name('auth.logout')
+    ->middleware('auth');
 
 /*
  * ---------------------------------------------------------------------------------------
@@ -39,7 +44,7 @@ Route::middleware('guest')->group(function () {
  * ---------------------------------------------------------------------------------------
  */
 
-Route::prefix('buyer')->name('buyer.')->group(function () {
+Route::middleware('role:buyer')->prefix('buyer')->name('buyer.')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('orders', OrderController::class)->only(['index', 'show']);
     Route::get('settings', [ProfileController::class, 'edit'])->name('settings.edit');

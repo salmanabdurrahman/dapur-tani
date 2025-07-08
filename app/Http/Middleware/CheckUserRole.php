@@ -13,10 +13,10 @@ class CheckUserRole
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, array ...$roles): Response
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
         if (!auth()->check()) {
-            return redirect()->route('auth.create')
+            return redirect()->to('/auth?o=login')
                 ->with('error', 'Kamu harus login terlebih dahulu.');
         }
 

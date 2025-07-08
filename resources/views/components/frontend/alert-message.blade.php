@@ -23,15 +23,13 @@
         document.addEventListener("DOMContentLoaded", function() {
             Swal.fire({
                 icon: "{{ $alertTypes[$sessionType] }}",
-                title: "{{ ucfirst($alertTypes[$sessionType]) }}",
                 text: "{{ $message }}",
                 position: 'top-end',
                 showConfirmButton: false,
                 timer: 3000,
                 toast: true,
                 timerProgressBar: true,
-                width: 430,
-                padding: '10px 15px'
+                width: 420,
             });
         });
     </script>
