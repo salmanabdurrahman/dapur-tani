@@ -27,7 +27,9 @@
                 class="absolute top-full mt-2 right-0 w-48 bg-white rounded-xl shadow-lg border border-slate-100 py-2"
                 x-transition>
                 <a href="{{ route('home') }}" class="block px-4 py-2 hover:bg-slate-50">Beranda</a>
-                <a href="#" class="block px-4 py-2 hover:bg-slate-50">Profil Saya</a>
+                <a href="{{ route('buyer.settings.edit', ['tab' => 'profile']) }}"
+                    class="block px-4 py-2 hover:bg-slate-50">Profil
+                    Saya</a>
                 <form action="{{ route('auth.logout') }}" method="post">
                     @csrf
                     <button type="submit"

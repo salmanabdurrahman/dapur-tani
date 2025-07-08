@@ -81,7 +81,7 @@
                                         <label for="name" class="font-semibold text-dark">Nama Lengkap</label>
                                         <input type="text" id="name" name="name" placeholder="Salman Abdurrahman"
                                             class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
-                                            required autofocus>
+                                            value="{{ old('name') }}" required autofocus>
                                         @error('name')
                                             <span class="text-red-500 text-sm">{{ $message }}</span>
                                         @enderror
@@ -90,7 +90,7 @@
                                         <label for="email" class="font-semibold text-dark">Alamat Email</label>
                                         <input type="email" id="email" name="email" placeholder="cs@dapurtani.com"
                                             class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
-                                            required>
+                                            value="{{ old('email') }}" required>
                                         @error('email')
                                             <span class="text-red-500 text-sm">{{ $message }}</span>
                                         @enderror
@@ -101,7 +101,7 @@
                                     <input type="text" id="subject" name="subject"
                                         placeholder="Contoh: Penawaran Kerjasama"
                                         class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
-                                        required>
+                                        value="{{ old('subject') }}" required>
                                     @error('subject')
                                         <span class="text-red-500 text-sm">{{ $message }}</span>
                                     @enderror
@@ -110,7 +110,7 @@
                                     <label for="message" class="font-semibold text-dark">Pesan Anda</label>
                                     <textarea id="message" name="message" rows="5" placeholder="Tuliskan pesan Anda di sini..."
                                         class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
-                                        required></textarea>
+                                        required>{{ old('message') }}</textarea>
                                     @error('message')
                                         <span class="text-red-500 text-sm">{{ $message }}</span>
                                     @enderror

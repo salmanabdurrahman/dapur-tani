@@ -59,7 +59,7 @@
                                     class='bx bx-envelope absolute left-4 top-1/2 -translate-y-1/2 text-xl text-slate-400'></i>
                                 <input type="email" id="login-email" name="email" placeholder="salman@gmail.com"
                                     class="w-full pl-12 pr-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
-                                    required autofocus>
+                                    value="{{ old('email') }}" required autofocus>
                             </div>
                             @error('email')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -77,7 +77,7 @@
                                     class='bx bx-lock-alt absolute left-4 top-1/2 -translate-y-1/2 text-xl text-slate-400'></i>
                                 <input type="password" id="login-password" name="password" placeholder="Kata Sandi Anda"
                                     class="w-full pl-12 pr-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
-                                    required>
+                                    value="{{ old('password') }}" required>
                             </div>
                             @error('password')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -100,7 +100,7 @@
                                 <i class='bx bx-user absolute left-4 top-1/2 -translate-y-1/2 text-xl text-slate-400'></i>
                                 <input type="text" id="register-name" name="name" placeholder="Salman Abdurrahman"
                                     class="w-full pl-12 pr-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
-                                    required autofocus>
+                                    value="{{ old('name') }}" required autofocus>
                             </div>
                             @error('name')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -113,7 +113,7 @@
                                     class='bx bx-envelope absolute left-4 top-1/2 -translate-y-1/2 text-xl text-slate-400'></i>
                                 <input type="email" id="register-email" name="email" placeholder="salman@gmail.com"
                                     class="w-full pl-12 pr-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
-                                    required>
+                                    value="{{ old('email') }}" required>
                             </div>
                             @error('email')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -127,7 +127,7 @@
                                 <input type="password" id="register-password" name="password"
                                     placeholder="Minimal 8 karakter"
                                     class="w-full pl-12 pr-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
-                                    required>
+                                    value="{{ old('password') }}" required>
                             </div>
                             @error('password')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>

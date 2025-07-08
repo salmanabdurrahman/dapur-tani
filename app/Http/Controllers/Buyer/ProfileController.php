@@ -12,11 +12,14 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    public function edit(): View
+    public function edit(Request $request): View
     {
         $user = auth()->user()->load('profile');
+        $openTab = in_array($request->query('tab'), ['profile', 'address', 'security'])
+            ? $request->query('tab')
+            : 'profile';
 
-        return view('app.buyer.pages.profile.edit', compact('user'));
+        return view('app.buyer.pages.profile.edit', compact('user', 'openTab'));
     }
 
     public function updateProfile(Request $request): RedirectResponse
@@ -48,7 +51,7 @@ class ProfileController extends Controller
 
             $profile->update($profileData);
 
-            return back()->with('success', 'Profil berhasil diperbarui.');
+            return back()->with('success', 'Profil berhasil diperbarui.')->withInput(['tab' => 'profile']);
         } catch (\Exception $e) {
             Log::error('Profile update failed', [
                 'error' => $e->getMessage(),
@@ -77,7 +80,7 @@ class ProfileController extends Controller
                 'province' => $validated['province'],
             ]);
 
-            return back()->with('success', 'Alamat pengiriman berhasil diperbarui.');
+            return back()->with('success', 'Alamat pengiriman berhasil diperbarui.')->withInput(['tab' => 'address']);
         } catch (\Exception $e) {
             Log::error('Address update failed', [
                 'error' => $e->getMessage(),
@@ -108,7 +111,7 @@ class ProfileController extends Controller
                 'password' => Hash::make($validated['new_password']),
             ]);
 
-            return back()->with('success', 'Kata sandi berhasil diperbarui.');
+            return back()->with('success', 'Kata sandi berhasil diperbarui.')->withInput(['tab' => 'security']);
         } catch (\Exception $e) {
             Log::error('Password update failed', [
                 'error' => $e->getMessage(),

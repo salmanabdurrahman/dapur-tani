@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
@@ -30,8 +29,6 @@ class BuyerAuthController extends Controller
             'password' => 'required|string|min:8',
         ]);
 
-        DB::beginTransaction();
-
         try {
             User::create([
                 'name' => $validated['name'],
@@ -41,18 +38,14 @@ class BuyerAuthController extends Controller
                 'status' => 'pending',
             ]);
 
-            DB::commit();
-
             return redirect()->to('/auth?o=login')->with('success', 'Akun berhasil dibuat. Silakan tunggu konfirmasi dari admin.');
         } catch (\Exception $e) {
-            DB::rollBack();
-
             Log::error('Buyer account creation failed', [
                 'error' => $e->getMessage(),
                 'data' => $validated,
             ]);
 
-            return redirect()->back()->with('error', 'Gagal membuat akun. Silakan coba lagi.');
+            return back()->with('error', 'Gagal membuat akun. Silakan coba lagi.');
         }
     }
 

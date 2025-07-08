@@ -30,7 +30,7 @@
                     @csrf
                     <input type="email" name="email_subscription" placeholder="Email Anda"
                         class="focus:ring-primary-500 focus:border-primary-500 w-full rounded-l-lg px-4 py-2.5 text-sm focus:outline-primary-500 border border-solid border-primary-300"
-                        required />
+                        value="{{ old('email_subscription') }}" required />
                     <button type="submit"
                         class="bg-primary-600 hover:bg-primary-700 rounded-r-lg px-5 py-2.5 font-semibold text-white transition-colors">
                         Kirim
