@@ -25,14 +25,14 @@ class UserProfile extends Model
     protected static function booted(): void
     {
         static::creating(function ($profile) {
-            if ($profile->business_name) {
-                $profile->slug = Str::slug($profile->business_name);
+            if ($profile->business_name ?? $profile->user->name) {
+                $profile->slug = Str::slug($profile->business_name ?? $profile->user->name);
             }
         });
 
         static::updating(function ($profile) {
             if ($profile->isDirty('business_name')) {
-                $profile->slug = Str::slug($profile->business_name);
+                $profile->slug = Str::slug($profile->business_name ?? $profile->user->name);
             }
         });
     }

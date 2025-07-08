@@ -26,7 +26,10 @@
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
                     <h2 class="text-xl font-bold text-dark">Informasi Profil Bisnis</h2>
                     <p class="text-slate-500 mt-1 mb-6">Pastikan informasi ini sesuai dengan data bisnis Anda.</p>
-                    <form action="#" method="POST" class="space-y-6">
+                    <form action="{{ route('buyer.settings.updateProfile') }}" method="POST" class="space-y-6"
+                        enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
                         <div x-data="{ photoName: null, photoPreview: null }" class="col-span-6 sm:col-span-4">
                             <label class="block font-semibold text-dark">Foto Profil / Logo Bisnis</label>
                             <div class="mt-2 flex items-center">
@@ -42,8 +45,15 @@
                                         </svg>
                                     </template>
                                 </span>
-                                <input type="file" class="hidden" x-ref="photo"
-                                    @change="photoName = $refs.photo.files[0].name; const reader = new FileReader(); reader.onload = (e) => { photoPreview = e.target.result; }; reader.readAsDataURL($refs.photo.files[0]);">
+                                <input type="file" class="hidden" x-ref="photo" name="photo" accept="image/*"
+                                    @change="
+                                        if ($refs.photo.files[0]) {
+                                            photoName = $refs.photo.files[0].name; 
+                                            const reader = new FileReader(); 
+                                            reader.onload = (e) => { photoPreview = e.target.result; }; 
+                                            reader.readAsDataURL($refs.photo.files[0]);
+                                        }
+                                    ">
                                 <button type="button" @click="$refs.photo.click()"
                                     class="ml-5 bg-white py-2 px-4 border border-slate-300 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-50">Ganti
                                     Foto</button>
@@ -51,29 +61,31 @@
                         </div>
                         <div>
                             <label for="business_name" class="font-semibold text-dark">Nama Bisnis</label>
-                            <input type="text" id="business_name" value="Resto Prime"
+                            <input type="text" id="business_name" name="business_name"
+                                value="{{ $user->profile->business_name ?? '' }}"
                                 class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
-                                required autofocus>
+                                placeholder="Resto Prime" required autofocus>
                         </div>
                         <div class="grid md:grid-cols-2 gap-6">
                             <div>
                                 <label for="contact_name" class="font-semibold text-dark">Nama Kontak (PIC)</label>
-                                <input type="text" id="contact_name" value="John Doe"
+                                <input type="text" id="contact_name" name="contact_name" value="{{ $user->name ?? '' }}"
                                     class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
-                                    required>
+                                    placeholder="Salman Abdurrahman" required>
                             </div>
                             <div>
                                 <label for="email" class="font-semibold text-dark">Alamat Email</label>
-                                <input type="email" id="email" value="resto.prime@example.com"
+                                <input type="email" id="email" name="email" value="{{ $user->email ?? '' }}"
                                     class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg bg-slate-100 cursor-not-allowed focus:outline-none"
-                                    readonly>
+                                    placeholder="cs@dapurtani.com" readonly>
                             </div>
                         </div>
                         <div>
                             <label for="phone_number" class="font-semibold text-dark">Nomor Telepon / WhatsApp</label>
-                            <input type="tel" id="phone_number" value="081234567890"
+                            <input type="tel" id="phone_number" name="phone_number"
+                                value="{{ $user->profile->phone_number ?? '' }}"
                                 class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
-                                required>
+                                placeholder="081234567890" required>
                         </div>
                         <div class="text-right pt-4 border-t border-slate-200">
                             <button type="submit"
@@ -88,25 +100,29 @@
                     <h2 class="text-xl font-bold text-dark">Alamat Pengiriman Utama</h2>
                     <p class="text-slate-500 mt-1 mb-6">Alamat ini akan digunakan sebagai alamat default untuk semua pesanan
                         Anda.</p>
-                    <form action="#" method="POST" class="space-y-6">
+                    <form action="{{ route('buyer.settings.updateAddress') }}" method="POST" class="space-y-6">
+                        @csrf
+                        @method('PUT')
                         <div>
                             <label for="address" class="font-semibold text-dark">Alamat Lengkap</label>
-                            <textarea id="address" rows="4" placeholder="Contoh: Jl. Kaliurang KM 5.5, Gg. Pandega, No. 123"
+                            <textarea id="address" rows="4" name="address" placeholder="Jl. Kaliurang KM 5.5, Gg. Pandega, No. 123"
                                 class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
-                                required>Jl. Kaliurang KM 5.5, Gg. Pandega, No. 123</textarea>
+                                required>{{ $user->profile->address ?? '' }}</textarea>
                         </div>
                         <div class="grid md:grid-cols-2 gap-6">
                             <div>
                                 <label for="city" class="font-semibold text-dark">Kota / Kabupaten</label>
-                                <input type="text" id="city" value="Sleman"
+                                <input type="text" id="city" name="city"
+                                    value="{{ $user->profile->city ?? '' }}"
                                     class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
-                                    required>
+                                    placeholder="Sleman" required>
                             </div>
                             <div>
                                 <label for="province" class="font-semibold text-dark">Provinsi</label>
-                                <input type="text" id="province" value="DI Yogyakarta"
+                                <input type="text" id="province" name="province"
+                                    value="{{ $user->profile->province ?? '' }}"
                                     class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
-                                    required>
+                                    placeholder="DI Yogyakarta" required>
                             </div>
                         </div>
                         <div class="text-right pt-4 border-t border-slate-200">
@@ -119,26 +135,29 @@
             </div>
             <div x-show="activeTab === 'keamanan'" x-transition>
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
-                    <h2 class="text-xl font-bold text-dark">Ganti Password</h2>
-                    <p class="text-slate-500 mt-1 mb-6">Untuk keamanan akun, ganti password Anda secara berkala.</p>
-                    <form action="#" method="POST" class="space-y-6">
+                    <h2 class="text-xl font-bold text-dark">Ganti Kata Sandi</h2>
+                    <p class="text-slate-500 mt-1 mb-6">Untuk keamanan akun, ganti kata sandi Anda secara berkala.</p>
+                    <form action="{{ route('buyer.settings.updatePassword') }}" method="POST" class="space-y-6">
+                        @csrf
+                        @method('PUT')
                         <div>
-                            <label for="current_password" class="font-semibold text-dark">Password Saat Ini</label>
-                            <input type="password" id="current_password"
+                            <label for="current_password" class="font-semibold text-dark">Kata Sandi Saat Ini</label>
+                            <input type="password" id="current_password" name="current_password"
                                 class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
-                                required>
+                                placeholder="Masukkan kata sandi saat ini" required>
                         </div>
                         <div>
-                            <label for="new_password" class="font-semibold text-dark">Password Baru</label>
-                            <input type="password" id="new_password"
+                            <label for="new_password" class="font-semibold text-dark">Kata Sandi Baru</label>
+                            <input type="password" id="new_password" name="new_password"
                                 class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
-                                required>
+                                placeholder="Masukkan kata sandi baru" required>
                         </div>
                         <div>
-                            <label for="confirm_password" class="font-semibold text-dark">Konfirmasi Password Baru</label>
-                            <input type="password" id="confirm_password"
+                            <label for="new_password_confirmation" class="font-semibold text-dark">Konfirmasi Kata Sandi
+                                Baru</label>
+                            <input type="password" id="new_password_confirmation" name="new_password_confirmation"
                                 class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
-                                required>
+                                placeholder="Konfirmasi kata sandi baru" required>
                         </div>
                         <div class="text-right pt-4 border-t border-slate-200">
                             <button type="submit"

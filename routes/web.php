@@ -48,4 +48,7 @@ Route::middleware('role:buyer')->prefix('buyer')->name('buyer.')->group(function
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('orders', OrderController::class)->only(['index', 'show']);
     Route::get('settings', [ProfileController::class, 'edit'])->name('settings.edit');
+    Route::put('settings/profile', [ProfileController::class, 'updateProfile'])->name('settings.updateProfile');
+    Route::put('settings/address', [ProfileController::class, 'updateAddress'])->name('settings.updateAddress');
+    Route::put('settings/password', [ProfileController::class, 'updatePassword'])->name('settings.updatePassword');
 });
