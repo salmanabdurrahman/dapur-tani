@@ -15,6 +15,8 @@
         rel="stylesheet">
     {{-- Alpine.js --}}
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     {{-- Sweetalert --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     {{-- Boxicons --}}
@@ -32,8 +34,14 @@
     {{-- Main Content --}}
     @yield('content')
 
+    {{-- Alert Message --}}
+    @if (session()->all())
+        <x-frontend.alert-message />
+    @endif
+
     {{-- Footer --}}
     <x-frontend.footer />
+
     {{-- Scripts --}}
     @stack('scripts')
 </body>

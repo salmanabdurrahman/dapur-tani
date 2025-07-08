@@ -162,5 +162,6 @@ return [
         'password_confirmation' => 'Konfirmasi Kata Sandi',
         'subject' => 'Subjek',
         'message' => 'Pesan',
+        'email_subscription' => 'Alamat Surel',
     ],
 ];

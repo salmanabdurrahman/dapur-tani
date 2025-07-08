@@ -39,6 +39,10 @@
                 @yield('content')
             </main>
 
+            {{-- Alert Message --}}
+            @if (session()->all())
+                <x-frontend.alert-message />
+            @endif
         </section>
     </div>
 

@@ -26,9 +26,9 @@
             </div>
             <div class="col-span-2 md:col-span-4">
                 <h4 class="text-dark mb-4 font-bold">Dapatkan Info Terbaru</h4>
-                <form action="#" method="POST" class="mt-2 flex items-center">
+                <form action="{{ route('subscriptions.store') }}" method="POST" class="mt-2 flex items-center">
                     @csrf
-                    <input type="email" placeholder="Email Anda"
+                    <input type="email" name="email_subscription" placeholder="Email Anda"
                         class="focus:ring-primary-500 focus:border-primary-500 w-full rounded-l-lg px-4 py-2.5 text-sm focus:outline-primary-500 border border-solid border-primary-300"
                         required />
                     <button type="submit"
@@ -36,6 +36,9 @@
                         Kirim
                     </button>
                 </form>
+                @error('email_subscription')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
             </div>
         </div>
         <div
