@@ -12,7 +12,7 @@ class SupplierSalesChart extends ChartWidget
 {
     protected static ?string $heading = 'Grafik Penjualan (30 Hari Terakhir)';
     protected int|string|array $columnSpan = 'full';
-    protected static ?int $sort = 1;
+    protected static ?int $sort = 2;
 
     protected function getData(): array
     {

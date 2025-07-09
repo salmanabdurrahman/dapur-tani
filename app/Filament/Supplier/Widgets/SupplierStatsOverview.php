@@ -8,6 +8,7 @@ use App\Models\Product;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SupplierStatsOverview extends BaseWidget
 {
@@ -29,6 +30,16 @@ class SupplierStatsOverview extends BaseWidget
             ->where('status', OrderStatus::PROCESSING)
             ->count();
 
+        $averageRating = DB::table('reviews')
+            ->join('products', 'reviews.product_id', '=', 'products.id')
+            ->where('products.supplier_id', $supplierId)
+            ->avg('reviews.rating');
+
+        $bestSeller = Product::where('supplier_id', $supplierId)
+            ->withCount('orderItems as sales_count')
+            ->orderByDesc('sales_count')
+            ->first();
+
         return [
             Stat::make('Total Pendapatan', 'Rp ' . number_format($totalRevenue, 0, ',', '.'))
                 ->description('Dari semua pesanan selesai')
@@ -42,6 +53,13 @@ class SupplierStatsOverview extends BaseWidget
                 ->description('Produk yang sedang dijual')
                 ->descriptionIcon('heroicon-m-shopping-bag')
                 ->color('info'),
+            Stat::make('Produk Terlaris', $bestSeller->name ?? 'Belum ada')
+                ->description($bestSeller ? ($bestSeller->sales_count . ' unit terjual') : '')
+                ->color('info'),
+            Stat::make('Rating Rata-rata', number_format($averageRating, 1))
+                ->description('Dari semua ulasan produk')
+                ->descriptionIcon('heroicon-m-star')
+                ->color('success'),
         ];
     }
 }

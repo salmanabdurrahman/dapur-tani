@@ -12,7 +12,7 @@ class ProductPerformanceTable extends BaseWidget
 {
     protected static ?string $heading = 'Performa Produk';
     protected int|string|array $columnSpan = 'full';
-    protected static ?int $sort = 3;
+    protected static ?int $sort = 5;
 
     public function table(Table $table): Table
     {
