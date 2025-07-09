@@ -23,6 +23,8 @@ class OrderResource extends Resource
     protected static ?string $navigationGroup = 'Manajemen Toko';
     protected static ?string $navigationLabel = 'Pesanan Masuk';
     protected static ?string $pluralModelLabel = 'Pesanan Masuk';
+    protected static ?string $label = 'Pesanan';
+    protected static ?string $pluralLabel = 'Pesanan';
     protected static ?int $navigationSort = 2;
 
     public static function canCreate(): bool

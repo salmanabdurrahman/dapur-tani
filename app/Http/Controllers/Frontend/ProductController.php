@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -35,11 +36,11 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id): View
+    public function show(Product $product): View
     {
-        return view('app.frontend.pages.products.show', [
-            'product' => $id, // Replace with actual product retrieval logic
-        ]);
+        $product->increment('view_count');
+
+        return view('app.frontend.pages.products.show', compact('product'));
     }
 
     /**

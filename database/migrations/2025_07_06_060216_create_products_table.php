@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->unsignedInteger('stock_quantity');
             $table->string('main_image_path');
             $table->string('status')->default('active');
+            $table->unsignedBigInteger('view_count')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

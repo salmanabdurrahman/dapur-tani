@@ -23,6 +23,8 @@ class PayoutResource extends Resource
     protected static ?string $navigationGroup = 'Manajemen Keuangan';
     protected static ?string $navigationLabel = 'Permintaan Payout';
     protected static ?string $pluralModelLabel = 'Permintaan Payout';
+    protected static ?string $label = 'Payout';
+    protected static ?string $pluralLabel = 'Payout';
     protected static ?int $navigationSort = 3;
 
     public static function canCreate(): bool
