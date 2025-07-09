@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->foreignId('order_id')->constrained('orders');
             $table->unsignedTinyInteger('rating');
             $table->text('comment')->nullable();
+            $table->boolean('is_visible')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });
