@@ -10,8 +10,8 @@ use Flowframe\Trend\TrendValue;
 class UsersChart extends ChartWidget
 {
     protected static ?string $heading = 'Pendaftaran Pengguna Baru';
+    protected int|string|array $columnSpan = 'full';
     protected static ?int $sort = 2;
-    protected static ?string $minWidth = '100%';
 
 
     protected function getData(): array
