@@ -20,7 +20,7 @@ class InitialDataSeeder extends Seeder
             'password' => bcrypt(env('ADMIN_PASSWORD', '')),
             'role' => UserRole::SUPERADMIN->value,
             'email_verified_at' => now(),
-            'status' => 'active',
+            'status' => 'verified',
         ]);
     }
 }
