@@ -96,13 +96,13 @@ class UserResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\Action::make('verify')
-                    ->label('Verifikasi')
-                    ->icon('heroicon-o-check-circle')
-                    ->color('success')
-                    ->requiresConfirmation()
-                    ->action(fn(User $record) => $record->update(['status' => 'verified']))
-                    ->visible(fn(User $record): bool => $record->status === 'pending'),
+                // Tables\Actions\Action::make('verify')
+                //     ->label('Verifikasi')
+                //     ->icon('heroicon-o-check-circle')
+                //     ->color('success')
+                //     ->requiresConfirmation()
+                //     ->action(fn(User $record) => $record->update(['status' => 'verified']))
+                //     ->visible(fn(User $record): bool => $record->status === 'pending'),
 
                 Tables\Actions\Action::make('suspend')
                     ->label('Suspend')
