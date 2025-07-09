@@ -121,12 +121,4 @@ class PayoutResource extends Resource
     {
         return parent::getEloquentQuery()->where('supplier_id', Auth::id());
     }
-
-    public static function mutateFormDataBeforeCreate(array $data): array
-    {
-        $data['supplier_id'] = Auth::id();
-        $data['status'] = 'pending';
-
-        return $data;
-    }
 }

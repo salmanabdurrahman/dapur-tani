@@ -167,10 +167,4 @@ class ProductResource extends Resource
     {
         return parent::getEloquentQuery()->where('supplier_id', Auth::id());
     }
-
-    public static function mutateFormDataBeforeCreate(array $data): array
-    {
-        $data['supplier_id'] = Auth::id();
-        return $data;
-    }
 }
