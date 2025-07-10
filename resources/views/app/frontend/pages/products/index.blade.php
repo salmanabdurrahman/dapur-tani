@@ -3,8 +3,8 @@
 @section('title', 'Jelajahi Produk Segar & Bahan Baku - Dapur Tani')
 
 @section('content')
-    <main class="py-12 md:py-16 my-20">
-        <section class="container mx-auto px-4 relative py-10">
+    <main class="py-12 md:py-20 my-20">
+        <section class="container mx-auto px-4 relative">
             <h1 class="text-4xl md:text-5xl font-extrabold text-dark tracking-tight mb-10">Jelajahi Semua Produk</h1>
             <form action="{{ route('products.index') }}" method="get">
                 <div class="flex flex-col lg:flex-row gap-12 lg:gap-8 lg:items-start" x-data="{ filtersOpen: false }">

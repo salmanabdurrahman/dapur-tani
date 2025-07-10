@@ -4,7 +4,7 @@
 
 @section('content')
     <main class="my-20">
-        <section class="relative py-24 bg-white">
+        <section class="relative py-12 md:py-20 bg-white">
             <div class="container mx-auto px-4 text-center">
                 <div class="max-w-3xl mx-auto">
                     <p class="font-semibold text-primary-600 text-lg">Misi Kami</p>

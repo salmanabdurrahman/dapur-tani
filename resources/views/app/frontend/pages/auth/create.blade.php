@@ -3,7 +3,7 @@
 @section('title', $title ?? 'Masuk ke Akun Anda - Dapur Tani')
 
 @section('content')
-    <main class="max-w-5xl mx-auto py-12 md:py-16 lg:py-24 my-20">
+    <main class="max-w-5xl mx-auto py-12 md:py-22 my-20">
         <section class="grid lg:grid-cols-2 gap-0 shadow-2xl rounded-lg overflow-hidden">
             <div
                 class="hidden lg:flex flex-col justify-between p-12 bg-gradient-to-br from-primary-600 to-primary-700 text-white">

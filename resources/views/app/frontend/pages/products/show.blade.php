@@ -3,8 +3,8 @@
 @section('title', "Jual $product->name Dengan Kualitas Terbaik - Dapur Tani")
 
 @section('content')
-    <main class="py-12 md:py-16 my-20">
-        <section class="container mx-auto px-4 relative py-10">
+    <main class="py-12 md:py-20 my-20">
+        <section class="container mx-auto px-4 relative">
             <h1 class="text-4xl md:text-5xl font-extrabold text-dark tracking-tight mb-10">Detail {{ $product->name }}</h1>
             <div class="grid lg:grid-cols-2 gap-12 lg:gap-16">
                 <div x-data="{ mainImage: '{{ $product->main_image_path ? Storage::url($product->main_image_path) : 'https://via.placeholder.com/600x400?text=No+Image' }}' }">

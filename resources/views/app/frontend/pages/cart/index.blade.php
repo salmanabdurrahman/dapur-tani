@@ -3,7 +3,7 @@
 @section('title', 'Keranjang Belanja Anda - Dapur Tani')
 
 @section('content')
-    <main class="py-12 md:py-16 my-20">
+    <main class="py-12 md:py-20 my-20">
         <section class="container mx-auto px-4">
             <h1 class="text-4xl md:text-5xl font-extrabold text-dark tracking-tight mb-10">Keranjang Belanja Anda</h1>
             @if (Gloudemans\Shoppingcart\Facades\Cart::count() > 0)
