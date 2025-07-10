@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -12,9 +13,21 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        return view('app.frontend.pages.products.index');
+        $categories = Category::withCount('products')
+            ->orderBy('name')
+            ->get();
+
+        $products = Product::query()
+            ->where('is_active', true)
+            ->with(['supplier.profile', 'category'])
+            ->filter($request->only(['search', 'categories', 'price_min', 'price_max']))
+            ->sort($request->get('sort', 'all'))
+            ->paginate(12)
+            ->withQueryString();
+
+        return view('app.frontend.pages.products.index', compact('categories', 'products'));
     }
 
     /**

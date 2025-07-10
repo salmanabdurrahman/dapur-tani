@@ -36,23 +36,46 @@ class ProductResource extends Resource
             ->schema([
                 Forms\Components\Section::make('Informasi Produk')
                     ->schema([
-                        Forms\Components\TextInput::make('name')->label('Nama Produk')->disabled(),
-                        Forms\Components\TextInput::make('supplier.name')->label('Nama Supplier')->disabled(),
-                        Forms\Components\TextInput::make('category.name')->label('Kategori')->disabled(),
-                        Forms\Components\RichEditor::make('description')->label('Deskripsi')->disabled()->columnSpanFull(),
+                        Forms\Components\TextInput::make('name')
+                            ->label('Nama Produk')
+                            ->disabled(),
+                        Forms\Components\TextInput::make('supplier.name')
+                            ->label('Nama Supplier')
+                            ->disabled()
+                            ->default(fn($record) => $record?->supplier?->name),
+                        Forms\Components\TextInput::make('category.name')
+                            ->label('Kategori')
+                            ->disabled()
+                            ->default(fn($record) => $record?->category?->name),
+                        Forms\Components\RichEditor::make('description')
+                            ->label('Deskripsi')
+                            ->disabled()
+                            ->columnSpanFull(),
                     ])->columns(2),
 
                 Forms\Components\Section::make('Harga & Stok')
                     ->schema([
-                        Forms\Components\TextInput::make('price')->label('Harga')->prefix('Rp')->disabled(),
-                        Forms\Components\TextInput::make('unit')->label('Satuan')->disabled(),
-                        Forms\Components\TextInput::make('stock_quantity')->label('Jumlah Stok')->disabled(),
+                        Forms\Components\TextInput::make('price')
+                            ->label('Harga')
+                            ->prefix('Rp')
+                            ->disabled(),
+                        Forms\Components\TextInput::make('unit')
+                            ->label('Satuan')
+                            ->disabled(),
+                        Forms\Components\TextInput::make('stock_quantity')
+                            ->label('Jumlah Stok')
+                            ->disabled(),
                     ])->columns(3),
 
                 Forms\Components\Section::make('Media & Status')
                     ->schema([
-                        Forms\Components\FileUpload::make('main_image_path')->label('Gambar Utama')->disabled(),
-                        Forms\Components\TextInput::make('status')->label('Status Jual')->disabled(),
+                        Forms\Components\FileUpload::make('main_image_path')
+                            ->label('Gambar Utama')
+                            ->disabled(),
+                        Forms\Components\TextInput::make('is_active')
+                            ->label('Status Jual')
+                            ->disabled()
+                            ->formatStateUsing(fn($state) => $state ? 'Aktif' : 'Tidak Aktif'),
                     ]),
             ]);
     }
@@ -77,18 +100,13 @@ class ProductResource extends Resource
                     ->money('IDR')
                     ->sortable(),
 
-                Tables\Columns\ToggleColumn::make('status')
+                Tables\Columns\ToggleColumn::make('is_active')
+                    ->label('Status Jual')
                     ->onColor('success')
                     ->offColor('danger')
                     ->onIcon('heroicon-s-check-circle')
                     ->offIcon('heroicon-s-x-circle')
-                    ->updateStateUsing(function ($record, $state) {
-                        $record->status = $state ? 'active' : 'inactive';
-                        $record->save();
-                    })
-                    ->getStateUsing(function ($record) {
-                        return $record->status === 'active';
-                    }),
+                    ->default(true)
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('supplier')

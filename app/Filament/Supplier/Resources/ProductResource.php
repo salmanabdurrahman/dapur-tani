@@ -90,12 +90,13 @@ class ProductResource extends Resource
                             ->directory('product-images')
                             ->required(),
 
-                        Forms\Components\Toggle::make('status')
+                        Forms\Components\Toggle::make('is_active')
                             ->label('Status Jual')
                             ->helperText('Jika tidak aktif, produk tidak akan tampil di halaman depan.')
-                            ->default(true)
                             ->onColor('success')
-                            ->offColor('danger'),
+                            ->offColor('danger')
+                            ->onIcon('heroicon-s-check-circle')
+                            ->offIcon('heroicon-s-x-circle')
                     ]),
             ]);
     }
@@ -126,7 +127,8 @@ class ProductResource extends Resource
                     ->numeric()
                     ->sortable(),
 
-                Tables\Columns\IconColumn::make('status')
+                Tables\Columns\IconColumn::make('is_active')
+                    ->label('Status Jual')
                     ->boolean()
                     ->trueIcon('heroicon-o-check-badge')
                     ->falseIcon('heroicon-o-x-circle'),

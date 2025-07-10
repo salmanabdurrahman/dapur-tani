@@ -66,7 +66,7 @@
                         bisnis Anda.</p>
                 </div>
                 <div class="flex flex-wrap justify-center gap-6 md:gap-8">
-                    <a href="#"
+                    <a href="/products?search=&categories%5B%5D=Sayuran+Segar"
                         class="group flex w-full flex-col items-center justify-center gap-4 rounded-2xl bg-slate-50 p-8 shadow-sm transition-all hover-elevate sm:w-64">
                         <div
                             class="rounded-2xl bg-primary-100 p-5 text-primary-600 transition-colors group-hover:bg-primary-600 group-hover:text-white">
@@ -74,7 +74,7 @@
                         </div>
                         <span class="text-dark text-xl font-bold">Sayuran</span>
                     </a>
-                    <a href="#"
+                    <a href="/products?search=&categories%5B%5D=Daging+dan+Unggas"
                         class="group flex w-full flex-col items-center justify-center gap-4 rounded-2xl bg-slate-50 p-8 shadow-sm transition-all hover-elevate sm:w-64">
                         <div
                             class="rounded-2xl bg-red-100 p-5 text-red-600 transition-colors group-hover:bg-red-600 group-hover:text-white">
@@ -82,7 +82,7 @@
                         </div>
                         <span class="text-dark text-xl font-bold">Daging</span>
                     </a>
-                    <a href="#"
+                    <a href="/products?search=&categories%5B%5D=Buah-buahan"
                         class="group flex w-full flex-col items-center justify-center gap-4 rounded-2xl bg-slate-50 p-8 shadow-sm transition-all hover-elevate sm:w-64">
                         <div
                             class="rounded-2xl bg-amber-100 p-5 text-amber-600 transition-colors group-hover:bg-amber-600 group-hover:text-white">
@@ -90,7 +90,7 @@
                         </div>
                         <span class="text-dark text-xl font-bold">Buah</span>
                     </a>
-                    <a href="#"
+                    <a href="/products?sort=all"
                         class="group flex w-full flex-col items-center justify-center gap-4 rounded-2xl bg-slate-50 p-8 shadow-sm transition-all hover-elevate sm:w-64">
                         <div
                             class="rounded-2xl bg-sky-100 p-5 text-sky-600 transition-colors group-hover:bg-sky-600 group-hover:text-white">
