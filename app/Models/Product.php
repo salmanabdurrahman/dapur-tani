@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Gloudemans\Shoppingcart\CanBeBought;
+use Gloudemans\Shoppingcart\Contracts\Buyable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,9 +11,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
-class Product extends Model
+class Product extends Model implements Buyable
 {
-    use SoftDeletes;
+    use SoftDeletes, CanBeBought;
 
     protected $table = 'products';
 
@@ -69,6 +71,26 @@ class Product extends Model
             'created_at_desc' => $query->orderBy('created_at', 'desc'),
             'all' => $query->latest(),
         };
+    }
+
+    public function getBuyableIdentifier($options = null)
+    {
+        return $this->id;
+    }
+
+    public function getBuyableDescription($options = null)
+    {
+        return $this->name;
+    }
+
+    public function getBuyablePrice($options = null)
+    {
+        return $this->price;
+    }
+
+    public function getBuyableWeight($options = null)
+    {
+        return $this->weight;
     }
 
     public function supplier(): BelongsTo

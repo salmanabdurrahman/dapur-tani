@@ -35,27 +35,40 @@
                     class="px-3 py-2 font-semibold transition-colors {{ request()->is('contact') ? 'text-primary-600' : 'text-dark hover:text-primary-600' }}">Hubungi
                     Kami</a>
             </div>
-            @if (Auth::check() && Auth::user()->role->value === 'supplier')
-                <a href="/supplier"
-                    class="bg-primary-600 hover:bg-primary-700 rounded-lg px-5 py-2.5 font-bold text-white shadow-sm transition-colors hover:shadow-md hidden lg:block">Dashboard</a>
-            @elseif (Auth::check() && Auth::user()->role->value === 'buyer')
-                <a href="{{ route('buyer.dashboard') }}"
-                    class="bg-primary-600 hover:bg-primary-700 rounded-lg px-5 py-2.5 font-bold text-white shadow-sm transition-colors hover:shadow-md hidden lg:block">Dashboard</a>
-            @else
-                <div class="hidden items-center space-x-2 lg:flex">
-                    <a href="{{ route('auth.create', ['o' => 'login']) }}"
-                        class="text-dark rounded-lg px-5 py-2.5 font-bold transition-colors hover:bg-slate-100">Masuk</a>
-                    <a href="{{ route('auth.create', ['o' => 'register']) }}"
-                        class="bg-primary-600 hover:bg-primary-700 rounded-lg px-5 py-2.5 font-bold text-white shadow-sm transition-colors hover:shadow-md">Daftar</a>
+            <div class="flex items-center space-x-2">
+                <a href="{{ route('cart.index') }}"
+                    class="relative px-3 py-2 text-dark font-semibold hover:text-primary-600 transition-colors items-center justify-center">
+                    <i class='bx bxs-cart-alt text-2xl lg:text-[30px] text-center block'></i>
+                    @if (Gloudemans\Shoppingcart\Facades\Cart::count() > 0)
+                        <span
+                            class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                            {{ Gloudemans\Shoppingcart\Facades\Cart::count() }}
+                        </span>
+                    @endif
+                </a>
+                <span class="hidden lg:block h-6 w-px bg-slate-200 mx-1"></span>
+                @if (Auth::check() && Auth::user()->role->value === 'supplier')
+                    <a href="/supplier"
+                        class="bg-primary-600 hover:bg-primary-700 rounded-lg px-5 py-2.5 font-bold text-white shadow-sm transition-colors hover:shadow-md hidden lg:block">Dashboard</a>
+                @elseif (Auth::check() && Auth::user()->role->value === 'buyer')
+                    <a href="{{ route('buyer.dashboard') }}"
+                        class="bg-primary-600 hover:bg-primary-700 rounded-lg px-5 py-2.5 font-bold text-white shadow-sm transition-colors hover:shadow-md hidden lg:block">Dashboard</a>
+                @else
+                    <div class="hidden items-center space-x-2 lg:flex">
+                        <a href="{{ route('auth.create', ['o' => 'login']) }}"
+                            class="text-dark rounded-lg px-5 py-2.5 font-bold transition-colors hover:bg-slate-100">Masuk</a>
+                        <a href="{{ route('auth.create', ['o' => 'register']) }}"
+                            class="bg-primary-600 hover:bg-primary-700 rounded-lg px-5 py-2.5 font-bold text-white shadow-sm transition-colors hover:shadow-md">Daftar</a>
+                    </div>
+                @endif
+                <div class="lg:hidden">
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-dark">
+                        <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </button>
                 </div>
-            @endif
-            <div class="lg:hidden">
-                <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-dark">
-                    <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16m-7 6h7"></path>
-                    </svg>
-                </button>
             </div>
         </div>
     </div>

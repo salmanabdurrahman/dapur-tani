@@ -68,38 +68,45 @@
                         </p>
                         <p class="text-sm text-slate-500 mt-1">Minimum pemesanan: 1 {{ $product->unit }}</p>
                     </div>
-                    <div x-data="{ quantity: 1 }" class="mt-8 space-y-4">
-                        <div class="flex items-center justify-between">
-                            <label class="font-bold text-dark">Jumlah</label>
-                            <div class="flex items-center border-2 border-slate-200 rounded-lg">
-                                <button
-                                    @click="{{ $product->stock_quantity > 0 ? 'quantity = Math.max(1, quantity - 1)' : '' }}"
-                                    class="px-4 py-2.5 text-slate-500 hover:bg-slate-100 rounded-l-md transition"><svg
-                                        class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M20 12H4" />
-                                    </svg></button>
-                                <input type="text" x-model="quantity"
-                                    class="w-16 text-center text-lg font-bold border-none focus:ring-0 focus:outline-none"
-                                    readonly>
-                                <button @click="{{ $product->stock_quantity > 0 ? 'quantity++' : '' }}"
-                                    class="px-4 py-2.5 text-slate-500 hover:bg-slate-100 rounded-r-md transition"><svg
-                                        class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 4v16m8-8H4" />
-                                    </svg></button>
+                    <form method="POST" action="{{ route('cart.store') }}">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <div x-data="{ quantity: 1 }" class="mt-8 space-y-4">
+                            <div class="flex items-center justify-between">
+                                <label class="font-bold text-dark">Jumlah</label>
+                                <div class="flex items-center border-2 border-slate-200 rounded-lg">
+                                    <button type="button"
+                                        @click="{{ $product->stock_quantity > 0 ? 'quantity = Math.max(1, quantity - 1)' : '' }}"
+                                        class="px-4 py-2.5 text-slate-500 hover:bg-slate-100 rounded-l-md transition">
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M20 12H4" />
+                                        </svg>
+                                    </button>
+                                    <input type="text" name="quantity" x-model="quantity" :value="1"
+                                        class="w-16 text-center text-lg font-bold border-none focus:ring-0 focus:outline-none"
+                                        readonly required>
+                                    <button type="button" @click="{{ $product->stock_quantity > 0 ? 'quantity++' : '' }}"
+                                        class="px-4 py-2.5 text-slate-500 hover:bg-slate-100 rounded-r-md transition">
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 4v16m8-8H4" />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
+                            <button type="submit"
+                                class="w-full flex items-center justify-center gap-3 bg-primary-600 text-white px-8 py-4 rounded-xl text-lg font-bold hover:bg-primary-700 transition-all duration-300 shadow-lg hover:shadow-primary-300 transform hover:-translate-y-0.5 @if ($product->stock_quantity <= 0) opacity-50 cursor-not-allowed @else hover:opacity-90 @endif"
+                                @if ($product->stock_quantity <= 0) disabled @endif>
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c.51 0 .962-.343 1.087-.835l1.823-6.841a.75.75 0 0 0-.543-.922l-13.5-3A.75.75 0 0 0 4.5 5.69l.522 1.942a.75.75 0 0 0 .674.528a.75.75 0 0 0 .674-.528L6.61 5.244a.75.75 0 0 1 .543-.922l13.5-3a.75.75 0 0 1 .922.543l-1.823 6.841a1.125 1.125 0 0 1-1.087.835H7.5Z" />
+                                </svg>
+                                <span>Tambah ke Keranjang</span>
+                            </button>
                         </div>
-                        <button
-                            class="w-full flex items-center justify-center gap-3 bg-primary-600 text-white px-8 py-4 rounded-xl text-lg font-bold hover:bg-primary-700 transition-all duration-300 shadow-lg hover:shadow-primary-300 transform hover:-translate-y-0.5 @if ($product->stock_quantity <= 0) opacity-50 cursor-not-allowed @else hover:opacity-90 @endif"
-                            disabled="{{ $product->stock_quantity <= 0 }}">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c.51 0 .962-.343 1.087-.835l1.823-6.841a.75.75 0 0 0-.543-.922l-13.5-3A.75.75 0 0 0 4.5 5.69l.522 1.942a.75.75 0 0 0 .674.528a.75.75 0 0 0 .674-.528L6.61 5.244a.75.75 0 0 1 .543-.922l13.5-3a.75.75 0 0 1 .922.543l-1.823 6.841a1.125 1.125 0 0 1-1.087.835H7.5Z" />
-                            </svg>
-                            <span>Tambah ke Keranjang</span>
-                        </button>
-                    </div>
+                    </form>
                     <div class="mt-8 pt-6 border-t border-slate-200">
                         <p class="font-bold text-dark mb-3">Informasi Pemasok</p>
                         <div class="flex items-center">
