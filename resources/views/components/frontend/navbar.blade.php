@@ -19,14 +19,14 @@
                     <div x-show="dropdownOpen" @click.away="dropdownOpen = false"
                         class="absolute top-full mt-2 w-56 rounded-xl border border-slate-100 bg-white py-2 shadow-lg"
                         x-transition>
+                        <a href="/products?sort=all"
+                            class="hover:text-primary-600 block px-4 py-2 hover:bg-slate-50">Semua Kategori</a>
                         <a href="/products?search=&categories%5B%5D=Sayuran+Segar"
                             class="hover:text-primary-600 block px-4 py-2 hover:bg-slate-50">Sayuran Segar</a>
                         <a href="/products?search=&categories%5B%5D=Buah-buahan"
                             class="hover:text-primary-600 block px-4 py-2 hover:bg-slate-50">Buah-buahan</a>
                         <a href="/products?search=&categories%5B%5D=Daging+dan+Unggas"
                             class="hover:text-primary-600 block px-4 py-2 hover:bg-slate-50">Daging & Unggas</a>
-                        <a href="/products?sort=all"
-                            class="hover:text-primary-600 block px-4 py-2 hover:bg-slate-50">Semua Kategori</a>
                     </div>
                 </div>
                 <a href="{{ route('about-us') }}"

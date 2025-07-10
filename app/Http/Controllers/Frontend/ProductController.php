@@ -52,8 +52,14 @@ class ProductController extends Controller
     public function show(Product $product): View
     {
         $product->increment('view_count');
+        $randomProducts = Product::where('is_active', true)
+            ->where('id', '!=', $product->id)
+            ->where('stock_quantity', '>', 0)
+            ->inRandomOrder()
+            ->take(4)
+            ->get();
 
-        return view('app.frontend.pages.products.show', compact('product'));
+        return view('app.frontend.pages.products.show', compact('product', 'randomProducts'));
     }
 
     /**

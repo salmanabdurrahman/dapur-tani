@@ -35,8 +35,8 @@
     <main class="pt-20 lg:pt-0">
         <section class="relative flex min-h-screen items-center justify-center bg-primary-50 py-20">
             <div class="container mx-auto px-4 text-center">
-                <div class="mx-auto max-w-4xl">
-                    <h1 class="text-dark text-5xl leading-tight font-black tracking-tight md:text-7xl">
+                <div class="mx-auto max-w-4xl lg:mb-4">
+                    <h1 class="text-dark text-5xl leading-tight font-black tracking-tight md:text-7xl lg:mb-2">
                         Temukan Pasokan <span class="text-primary-600">Segar & Berkualitas</span> untuk Bisnis Anda
                     </h1>
                     <p class="mx-auto mt-6 max-w-2xl text-lg text-slate-600">
@@ -45,12 +45,13 @@
                     </p>
                 </div>
                 <div class="mx-auto mt-10 max-w-2xl">
-                    <form method="POST" class="relative">
+                    <form class="relative">
                         @csrf
-                        <input type="text" placeholder="Cari produk apa hari ini? (misal: Tomat Ceri)"
+                        <input type="text" name="search" id="searchInput"
+                            placeholder="Cari produk apa hari ini? (misal: Tomat Ceri)"
                             class="focus:ring-primary-500 focus:border-primary-500 w-full rounded-xl border border-primary-300 py-4 pr-36 pl-5 text-lg shadow-lg focus:outline-primary-500 bg-white"
                             required />
-                        <button type="submit"
+                        <button type="submit" id="searchButton"
                             class="bg-primary-600 hover:bg-primary-700 absolute inset-y-0 right-2.5 my-2.5 rounded-lg px-6 text-lg font-bold text-white transition-colors">
                             Cari
                         </button>
@@ -425,3 +426,21 @@
         </section>
     </main>
 @endsection
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+
+            searchButton.addEventListener('click', function(event) {
+                event.preventDefault();
+                const query = searchInput.value.trim();
+
+                if (query) {
+                    window.location.href = `/products?search=${encodeURIComponent(query)}`;
+                }
+            });
+        });
+    </script>
+@endpush

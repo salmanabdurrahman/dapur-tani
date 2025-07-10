@@ -143,9 +143,12 @@
                     <div class="lg:w-3/4">
                         <div
                             class="flex flex-col md:flex-row justify-between md:items-center mb-6 bg-white p-4 rounded-xl shadow-sm border border-slate-200">
-                            <p class="text-slate-600 font-medium mb-4 md:mb-0">Menampilkan
-                                {{ $products->firstItem() }}-{{ $products->lastItem() }} dari {{ $products->total() }}
-                                produk</p>
+                            <p class="text-slate-600 font-medium mb-4 md:mb-0">
+                                @if ($products->count() > 0)
+                                    Menampilkan {{ $products->firstItem() }}-{{ $products->lastItem() }} dari
+                                    {{ $products->total() }} produk
+                                @endif
+                            </p>
                             <div class="flex items-center gap-2">
                                 <button @click="filtersOpen = true"
                                     class="lg:hidden flex-1 flex items-center justify-center space-x-2 bg-slate-100 px-4 py-2.5 rounded-lg font-semibold">
@@ -181,11 +184,17 @@
                                         <div class="relative">
                                             <img src="{{ Storage::url($product->main_image_path) }}"
                                                 alt="{{ $product->name }}"
-                                                class="w-full h-52 object-cover transition-transform duration-500 group-hover:scale-110"
+                                                class="w-full h-52 object-cover transition-transform duration-500 group-hover:scale-110 @if ($product->stock_quantity <= 0) grayscale-[80%] opacity-50 @endif"
                                                 loading="lazy">
-                                            <div
-                                                class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-dark">
-                                                {{ $product->category->name }}</div>
+                                            @if ($product->stock_quantity <= 0)
+                                                <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
+                                                    <span class="text-white font-bold text-lg">Habis</span>
+                                                </div>
+                                            @else
+                                                <div
+                                                    class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-dark">
+                                                    {{ $product->category->name }}</div>
+                                            @endif
                                         </div>
                                         <div class="p-5 flex flex-col">
                                             <h3 class="text-lg font-bold text-dark mb-1 truncate">{{ $product->name }}

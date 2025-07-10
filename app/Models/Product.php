@@ -39,7 +39,10 @@ class Product extends Model
     {
         $query->when($filters['search'] ?? null, function (Builder $query, $search) {
             $query->where('name', 'like', "%{$search}%")
-                ->orWhere('description', 'like', "%{$search}%");
+                ->orWhere('description', 'like', "%{$search}%")
+                ->orWhereHas('category', function (Builder $q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                });
         });
 
         $query->when($filters['categories'] ?? null, function (Builder $query, $categories) {
