@@ -15,15 +15,15 @@ class DashboardController extends Controller
         $user = auth()->user();
 
         $activeOrdersCount = Order::where('buyer_id', $user->id)
-            ->whereIn('status', [OrderStatus::PROCESSING, OrderStatus::SHIPPED])
+            ->whereIn('status', [OrderStatus::PROCESSING, OrderStatus::DELIVERED, OrderStatus::SHIPPED])
             ->count();
 
         $processingOrdersCount = Order::where('buyer_id', $user->id)
-            ->where('status', OrderStatus::PROCESSING)
+            ->whereIn('status', [OrderStatus::PROCESSING, OrderStatus::DELIVERED])
             ->count();
 
         $monthlySpending = Order::where('buyer_id', $user->id)
-            ->where('status', OrderStatus::PROCESSING)
+            ->whereNotIn('status', [OrderStatus::PENDING_PAYMENT, OrderStatus::CANCELLED])
             ->whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
             ->sum('total_amount');
