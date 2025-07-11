@@ -14,7 +14,7 @@
             </div>
             <div>
                 <p class="text-slate-500">Pesanan Aktif</p>
-                <p class="text-3xl font-extrabold text-dark">3</p>
+                <p class="text-3xl font-extrabold text-dark">{{ $activeOrdersCount }}</p>
             </div>
         </div>
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-6">
@@ -22,7 +22,7 @@
                     class='bx bxs-truck text-3xl'></i></div>
             <div>
                 <p class="text-slate-500">Menunggu Pengiriman</p>
-                <p class="text-3xl font-extrabold text-dark">1</p>
+                <p class="text-3xl font-extrabold text-dark">{{ $processingOrdersCount }}</p>
             </div>
         </div>
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-6">
@@ -31,7 +31,7 @@
             </div>
             <div>
                 <p class="text-slate-500">Total Belanja Bulan Ini</p>
-                <p class="text-3xl font-extrabold text-dark">Rp 5.2Jt</p>
+                <p class="text-3xl font-extrabold text-dark">Rp {{ number_format($monthlySpending, 0, ',', '.') }}</p>
             </div>
         </div>
     </section>
@@ -49,39 +49,41 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="border-b border-slate-100">
-                        <td class="p-4 font-semibold text-dark">#DP-12345</td>
-                        <td class="p-4">5 Juli 2025</td>
-                        <td class="p-4 font-semibold">Rp 1.250.000</td>
-                        <td class="p-4"><span
-                                class="bg-sky-100 text-sky-600 font-semibold px-3 py-1 text-sm rounded-full">Dikirim</span>
-                        </td>
-                        <td class="p-4"><a href="#" class="text-primary-600 font-semibold hover:underline">Lihat
-                                Detail</a>
-                        </td>
-                    </tr>
-                    <tr class="border-b border-slate-100">
-                        <td class="p-4 font-semibold text-dark">#DP-12344</td>
-                        <td class="p-4">3 Juli 2025</td>
-                        <td class="p-4 font-semibold">Rp 875.000</td>
-                        <td class="p-4"><span
-                                class="bg-primary-100 text-primary-600 font-semibold px-3 py-1 text-sm rounded-full">Selesai</span>
-                        </td>
-                        <td class="p-4"><a href="#" class="text-primary-600 font-semibold hover:underline">Lihat
-                                Detail</a>
-                        </td>
-                    </tr>
-                    <tr class="border-b border-slate-100">
-                        <td class="p-4 font-semibold text-dark">#DP-12342</td>
-                        <td class="p-4">1 Juli 2025</td>
-                        <td class="p-4 font-semibold">Rp 2.100.000</td>
-                        <td class="p-4"><span
-                                class="bg-primary-100 text-primary-600 font-semibold px-3 py-1 text-sm rounded-full">Selesai</span>
-                        </td>
-                        <td class="p-4"><a href="#" class="text-primary-600 font-semibold hover:underline">Lihat
-                                Detail</a>
-                        </td>
-                    </tr>
+                    @forelse ($recentOrders as $order)
+                        <tr class="border-b border-slate-100">
+                            <td class="p-4 font-semibold text-dark">{{ $order->order_number }}</td>
+                            <td class="p-4">{{ $order->created_at->format('d F Y') }}</td>
+                            <td class="p-4 font-semibold">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
+                            <td class="p-4">
+                                <span @class([
+                                    'font-semibold px-3 py-1 text-xs rounded-full',
+                                    'bg-amber-100 text-amber-600' =>
+                                        $order->status === \App\Enums\OrderStatus::PROCESSING,
+                                    'bg-sky-100 text-sky-600' =>
+                                        $order->status === \App\Enums\OrderStatus::SHIPPED,
+                                    'bg-primary-100 text-primary-600' =>
+                                        $order->status === \App\Enums\OrderStatus::COMPLETED,
+                                    'bg-red-100 text-red-600' =>
+                                        $order->status === \App\Enums\OrderStatus::CANCELLED,
+                                    'bg-slate-100 text-slate-600' =>
+                                        $order->status === \App\Enums\OrderStatus::PENDING_PAYMENT,
+                                ])>
+                                    {{ Str::title(str_replace('_', ' ', $order->status->value)) }}
+                                </span>
+                            </td>
+                            <td class="p-4">
+                                <a href="{{ route('buyer.orders.show', $order) }}"
+                                    class="text-primary-600 font-semibold hover:underline">Lihat
+                                    Detail</a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="text-center p-8 text-slate-500">
+                                Anda belum memiliki pesanan terbaru.
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

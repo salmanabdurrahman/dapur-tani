@@ -38,7 +38,7 @@ class BuyerAuthController extends Controller
                 'status' => 'pending',
             ]);
 
-            return redirect()->to('/auth?o=login')->with('success', 'Akun berhasil dibuat. Silakan tunggu konfirmasi dari admin.');
+            return redirect()->to('/auth?o=login')->with('success', 'Akun berhasil dibuat. Silakan masuk untuk melanjutkan.');
         } catch (\Exception $e) {
             Log::error('Buyer account creation failed', [
                 'error' => $e->getMessage(),

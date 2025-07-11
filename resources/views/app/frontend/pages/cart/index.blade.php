@@ -70,7 +70,11 @@
                             <div class="space-y-3 text-slate-600">
                                 <div class="flex justify-between"><span>Subtotal</span>
                                     <span class="font-semibold text-dark">Rp
-                                        {{ Gloudemans\Shoppingcart\Facades\Cart::total(0, ',', '.') }}</span>
+                                        {{ Gloudemans\Shoppingcart\Facades\Cart::subtotal(0, ',', '.') }}</span>
+                                </div>
+                                <div class="flex justify-between"><span>Biaya Operasional</span>
+                                    <span class="font-semibold text-dark">Rp
+                                        {{ Gloudemans\Shoppingcart\Facades\Cart::tax(0, ',', '.') }}</span>
                                 </div>
                                 <div class="flex justify-between"><span>Biaya Pengiriman</span>
                                     <span class="font-semibold text-dark">Akan dihitung</span>

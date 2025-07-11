@@ -35,9 +35,9 @@
                     class="px-3 py-2 font-semibold transition-colors {{ request()->is('contact') ? 'text-primary-600' : 'text-dark hover:text-primary-600' }}">Hubungi
                     Kami</a>
             </div>
-            <div class="flex items-center space-x-2">
+            <div class="flex items-center space-x-2 lg:space-x-1">
                 <a href="{{ route('cart.index') }}"
-                    class="relative px-3 py-2 text-dark font-semibold hover:text-primary-600 transition-colors items-center justify-center">
+                    class="relative py-2 text-dark font-semibold hover:text-primary-600 transition-colors items-center justify-center">
                     <i class='bx bxs-cart-alt text-2xl lg:text-[30px] text-center block'></i>
                     @if (Gloudemans\Shoppingcart\Facades\Cart::count() > 0)
                         <span
@@ -46,7 +46,7 @@
                         </span>
                     @endif
                 </a>
-                <span class="hidden lg:block h-6 w-px bg-slate-200 mx-1"></span>
+                <span class="hidden lg:block h-6 w-px bg-slate-200 mx-4"></span>
                 @if (Auth::check() && Auth::user()->role->value === 'supplier')
                     <a href="/supplier"
                         class="bg-primary-600 hover:bg-primary-700 rounded-lg px-5 py-2.5 font-bold text-white shadow-sm transition-colors hover:shadow-md hidden lg:block">Dashboard</a>

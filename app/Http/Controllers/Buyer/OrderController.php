@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Buyer;
 
+use App\Enums\OrderStatus;
 use App\Http\Controllers\Controller;
+use App\Models\Order;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -11,9 +14,28 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        return view('app.buyer.pages.orders.index');
+        $user = auth()->user();
+
+        $ordersQuery = Order::query()
+            ->where('buyer_id', $user->id)
+            ->latest();
+
+        $validStatuses = [
+            OrderStatus::PROCESSING->value,
+            OrderStatus::SHIPPED->value,
+            OrderStatus::COMPLETED->value,
+            OrderStatus::CANCELLED->value,
+        ];
+
+        if ($request->filled('status') && in_array($request->status, $validStatuses)) {
+            $ordersQuery->where('status', $request->status);
+        }
+
+        $orders = $ordersQuery->paginate(5)->withQueryString();
+
+        return view('app.buyer.pages.orders.index', compact('orders'));
     }
 
     /**
@@ -35,9 +57,17 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id): View
+    public function show(string $id): View|RedirectResponse
     {
-        return view('app.buyer.pages.orders.show');
+        $order = Order::find($id);
+
+        if (!$order || $order->buyer_id !== auth()->id()) {
+            return redirect()->route('buyer.orders.index');
+        }
+
+        $order->load('items.product');
+
+        return view('app.buyer.pages.orders.show', compact('order'));
     }
 
     /**

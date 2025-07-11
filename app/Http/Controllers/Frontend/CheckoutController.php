@@ -99,7 +99,7 @@ class CheckoutController extends Controller
                 'trace' => $e->getTraceAsString(),
             ]);
 
-            return back()->with('error', 'Terjadi kesalahan saat memproses checkout. Silakan coba lagi.');
+            return redirect()->route('cart.index')->with('error', 'Terjadi kesalahan saat memproses checkout. Silakan coba lagi.');
         }
     }
 
