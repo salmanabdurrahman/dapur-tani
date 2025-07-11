@@ -1,4 +1,5 @@
-name: Deploy Laravel to cPanel
+name: Deploy Laravel to cPanel via Git Pull
+description: This workflow deploys a Laravel application to a cPanel server using SSH and Git pull.
 
 on:
   push:
@@ -10,46 +11,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Checkout repository
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    # Step 2: Setup PHP & install dependencies
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
+    # Step 1: Set up SSH key to connect to the server
+    - name: Setup SSH
+      uses: webfactory/ssh-agent@v0.9.0
       with:
-        php-version: '8.2'
-        extensions: mbstring, dom, fileinfo, mysql
-        coverage: none
-    - name: Install Composer dependencies
-      run: composer install --prefer-dist --no-progress --no-dev
+        ssh-private-key: ${{ secrets.SSH_KEY }}
 
-    # Step 3: Setup Node & build assets
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
+    # Step 2: Set up Deploy Key to enable git pull
+    - name: Setup Deploy Key
+      uses: webfactory/ssh-agent@v0.9.0
       with:
-        node-version: '20'
-    - name: Install NPM dependencies
-      run: npm install
-    - name: Build assets
-      run: npm run build
+        ssh-private-key: ${{ secrets.DEPLOY_KEY }}
 
-    # Step 4: Deploy files to cPanel using SCP
-    - name: Deploy files
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        key: ${{ secrets.SSH_KEY }}
-        port: ${{ secrets.SSH_PORT }}
-        passphrase: ${{ secrets.SSH_PASSPHRASE }}
-        source: "."
-        target: "/home/salmanab/dapurtani.salmanabdurrahman.my.id"
-        strip_components: 1
-        rm: true
-
-    # Step 5: Run commands on the server using SSH
-    - name: Run deployment commands
+    # Step 3: Run deployment commands on the cPanel server
+    - name: Deploy and Run Commands
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -59,6 +34,19 @@ jobs:
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
         script: |
           cd /home/salmanab/dapurtani.salmanabdurrahman.my.id
+          
+          git pull origin main
+          
+          composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+          
+          npm install
+          npm run build
+          
+          php artisan migrate --force
+          
+          php artisan filament:optimize
+          php artisan filament:optimize-clear
           php artisan optimize:clear
           php artisan optimize
+          
           echo "Deployment successful!"
