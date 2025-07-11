@@ -1,5 +1,5 @@
 name: Deploy Laravel to cPanel via Git Pull
-description: This workflow deploys the Laravel application to cPanel by pulling the latest changes from the main branch using SSH.
+description: This workflow deploys the Laravel application to cPanel by pulling the latest changes from the main branch using SSH and Composer, NPM, and Artisan commands.
 
 on:
   push:
@@ -22,9 +22,12 @@ jobs:
         script: |
           cd /home/salmanab/dapurtani.salmanabdurrahman.my.id
           
-          echo "Setting up SSH Agent for Git Pull..."
+          echo "Setting up Deploy Key for Git Pull..."
           eval $(ssh-agent -s)
-          ssh-add <(echo "${{ secrets.DEPLOY_KEY }}")
+          echo "${{ secrets.DEPLOY_KEY }}" > deploy_key.pem
+          chmod 600 deploy_key.pem
+          ssh-add deploy_key.pem
+          rm deploy_key.pem
           
           echo "Pulling latest changes from main branch..."
           git pull origin main
@@ -34,7 +37,6 @@ jobs:
           
           echo "Installing NPM dependencies and building assets..."
           npm install
-          npm run build
           
           echo "Running database migrations..."
           php artisan migrate --force
