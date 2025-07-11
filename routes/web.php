@@ -10,6 +10,7 @@ use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ProductController;
+use App\Http\Controllers\Frontend\ReviewController;
 use App\Http\Controllers\Frontend\SubscriptionController;
 use Illuminate\Support\Facades\Route;
 
@@ -50,6 +51,7 @@ Route::post('logout', [BuyerAuthController::class, 'logout'])->name('auth.logout
 Route::middleware('role:buyer')->prefix('buyer')->name('buyer.')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('orders', OrderController::class)->only(['index', 'show']);
+    Route::post('orders/{order}/review', [ReviewController::class, 'store'])->name('orders.review.store');
     Route::get('settings', [ProfileController::class, 'edit'])->name('settings.edit');
     Route::put('settings/profile', [ProfileController::class, 'updateProfile'])->name('settings.updateProfile');
     Route::put('settings/address', [ProfileController::class, 'updateAddress'])->name('settings.updateAddress');

@@ -21,9 +21,9 @@
                        {{ request('status') == 'processing' ? 'border-primary-600 text-primary-600' : 'border-transparent text-slate-500 hover:text-dark' }}">
                         Diproses
                     </a>
-                    <a href="{{ route('buyer.orders.index', ['status' => 'shipped']) }}"
+                    <a href="{{ route('buyer.orders.index', ['status' => 'delivered']) }}"
                         class="whitespace-nowrap py-4 px-1 border-b-4 font-bold transition-colors
-                       {{ request('status') == 'shipped' ? 'border-primary-600 text-primary-600' : 'border-transparent text-slate-500 hover:text-dark' }}">
+                       {{ request('status') == 'delivered' ? 'border-primary-600 text-primary-600' : 'border-transparent text-slate-500 hover:text-dark' }}">
                         Dikirim
                     </a>
                     <a href="{{ route('buyer.orders.index', ['status' => 'completed']) }}"
@@ -65,6 +65,8 @@
                                             $order->status === \App\Enums\OrderStatus::PROCESSING,
                                         'bg-sky-100 text-sky-600' =>
                                             $order->status === \App\Enums\OrderStatus::SHIPPED,
+                                        'bg-blue-100 text-blue-700' =>
+                                            $order->status === \App\Enums\OrderStatus::DELIVERED,
                                         'bg-primary-100 text-primary-600' =>
                                             $order->status === \App\Enums\OrderStatus::COMPLETED,
                                         'bg-red-100 text-red-600' =>

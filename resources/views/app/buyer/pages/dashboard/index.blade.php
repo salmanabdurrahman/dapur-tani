@@ -61,6 +61,8 @@
                                         $order->status === \App\Enums\OrderStatus::PROCESSING,
                                     'bg-sky-100 text-sky-600' =>
                                         $order->status === \App\Enums\OrderStatus::SHIPPED,
+                                    'bg-blue-100 text-blue-700' =>
+                                        $order->status === \App\Enums\OrderStatus::DELIVERED,
                                     'bg-primary-100 text-primary-600' =>
                                         $order->status === \App\Enums\OrderStatus::COMPLETED,
                                     'bg-red-100 text-red-600' =>

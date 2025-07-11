@@ -84,6 +84,8 @@
                             $order->status === \App\Enums\OrderStatus::PROCESSING,
                         'bg-sky-100 text-sky-700' =>
                             $order->status === \App\Enums\OrderStatus::SHIPPED,
+                        'bg-blue-100 text-blue-700' =>
+                            $order->status === \App\Enums\OrderStatus::DELIVERED,
                         'bg-primary-100 text-primary-700' =>
                             $order->status === \App\Enums\OrderStatus::COMPLETED,
                         'bg-red-100 text-red-700' =>
@@ -97,6 +99,8 @@
                                 $order->status === \App\Enums\OrderStatus::PROCESSING,
                             'bx bxs-truck text-2xl' =>
                                 $order->status === \App\Enums\OrderStatus::SHIPPED,
+                            'bx bxs-package text-2xl' =>
+                                $order->status === \App\Enums\OrderStatus::DELIVERED,
                             'bx bxs-check-circle text-2xl' =>
                                 $order->status === \App\Enums\OrderStatus::COMPLETED,
                             'bx bxs-x-circle text-2xl' =>
@@ -105,17 +109,30 @@
                         <span>{{ Str::title(str_replace('_', ' ', $order->status->value)) }}</span>
                     </div>
                 </div>
-                @if ($order->status === App\Enums\OrderStatus::PENDING_PAYMENT && $order->snap_token)
-                    <div class="border-t border-b border-slate-200 py-2">
-                        <h3 class="font-bold text-dark mb-2">Aksi</h3>
+                <div class="border-t border-b border-slate-200 py-2">
+                    <h3 class="font-bold text-dark mb-2">Aksi</h3>
+                    @if ($order->status === \App\Enums\OrderStatus::PENDING_PAYMENT && $order->snap_token)
                         <button id="pay-button"
                             class="w-full bg-primary-600 text-white font-bold px-4 py-3 rounded-lg hover:bg-primary-700 transition-colors flex items-center justify-center gap-2">
                             <i class='bx bxs-credit-card text-xl'></i><span>Bayar Sekarang</span>
                         </button>
-                        <p class="text-xs text-slate-500 mt-2 text-center">Selesaikan pembayaran untuk melanjutkan pesanan.
+                        <p class="text-xs text-slate-500 mt-2 text-center">Selesaikan pembayaran untuk melanjutkan
+                            pesanan.
                         </p>
-                    </div>
-                @endif
+                    @elseif (
+                        $order->status === \App\Enums\OrderStatus::COMPLETED &&
+                            $order->items->every(fn($item) => $item->product && $item->product->reviews->isEmpty()))
+                        <button @click="reviewModalOpen = true"
+                            class="w-full bg-amber-500 text-white font-bold px-4 py-3 rounded-lg hover:bg-amber-600 transition-colors flex items-center justify-center gap-2">
+                            <i class='bx bxs-star text-xl'></i><span>Beri Ulasan</span>
+                        </button>
+                        <p class="text-xs text-slate-500 mt-2 text-center">Terima kasih telah menyelesaikan pesanan ini.
+                            Silakan beri ulasan untuk produk yang Anda terima.
+                        </p>
+                    @else
+                        <p class="text-sm text-slate-500">Tidak ada aksi yang tersedia untuk pesanan ini.</p>
+                    @endif
+                </div>
                 <div>
                     <h3 class="font-bold text-dark mb-2">Alamat Pengiriman</h3>
                     <div class="text-slate-600 leading-relaxed">
@@ -137,6 +154,50 @@
             </div>
         </div>
     </section>
+    {{-- Review Modal --}}
+    <div x-show="reviewModalOpen" x-cloak class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+        x-transition.opacity>
+        <div @click.away="reviewModalOpen = false"
+            class="bg-white w-full max-w-2xl rounded-2xl shadow-xl p-8 transform transition-all" x-show="reviewModalOpen"
+            x-transition:enter="ease-out duration-300"
+            x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100">
+            <h2 class="text-2xl font-bold text-dark mb-4">Beri Ulasan untuk Pesanan {{ $order->order_number }}</h2>
+            <form action="{{ route('buyer.orders.review.store', $order) }}" method="POST">
+                @csrf
+                <div class="space-y-6 max-h-[60vh] overflow-y-auto pr-4">
+                    @foreach ($order->items as $item)
+                        <div class="flex items-start gap-4 border-t border-slate-100 pt-6 first:pt-0">
+                            <img src="{{ $item->product ? Storage::url($item->product->main_image_path) : 'https://via.placeholder.com/150' }}"
+                                alt="{{ $item->product_name }}" class="w-20 h-20 object-cover rounded-lg flex-shrink-0">
+                            <div class="flex-grow" x-data="{ rating: 0, hoverRating: 0 }">
+                                <p class="font-bold text-dark">{{ $item->product_name }}</p>
+                                <div class="flex items-center my-2" @mouseleave="hoverRating = 0">
+                                    <template x-for="i in 5">
+                                        <i @click="rating = i" @mouseenter="hoverRating = i"
+                                            class="bx bxs-star text-3xl cursor-pointer"
+                                            :class="(hoverRating >= i || rating >= i) ? 'text-amber-400' : 'text-slate-300'"></i>
+                                    </template>
+                                    <input type="hidden" name="reviews[{{ $item->product_id }}][rating]" x-model="rating"
+                                        required>
+                                </div>
+                                <textarea name="reviews[{{ $item->product_id }}][comment]" rows="3"
+                                    placeholder="Bagaimana pendapat Anda tentang produk ini?"
+                                    class="w-full p-2 border border-primary-300 rounded-lg text-sm focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"></textarea>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="flex justify-end gap-4 mt-8 pt-6 border-t border-slate-200">
+                    <button type="button" @click="reviewModalOpen = false"
+                        class="bg-slate-100 text-dark font-bold px-6 py-2.5 rounded-lg hover:bg-slate-200">Batal</button>
+                    <button type="submit"
+                        class="bg-primary-600 text-white font-bold px-6 py-2.5 rounded-lg hover:bg-primary-700">Kirim
+                        Ulasan</button>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')

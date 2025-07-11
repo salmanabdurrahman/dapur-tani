@@ -27,6 +27,7 @@ class OrderController extends Controller
             OrderStatus::SHIPPED->value,
             OrderStatus::COMPLETED->value,
             OrderStatus::CANCELLED->value,
+            OrderStatus::DELIVERED->value,
         ];
 
         if ($request->filled('status') && in_array($request->status, $validStatuses)) {

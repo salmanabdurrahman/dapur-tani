@@ -187,7 +187,9 @@
                                             <p class="font-bold text-dark">
                                                 {{ $review->user->profile->business_name ?? $review->user->name }}
                                             </p>
-                                            <p class="text-sm text-slate-500 flex items-center">★★★★★</p>
+                                            <p class="text-sm text-slate-500 flex items-center">
+                                                {{ str_repeat('★', $review->rating) }}{{ str_repeat('☆', 5 - $review->rating) }}
+                                            </p>
                                         </div>
                                     </div>
                                     <p>"{{ $review->comment }}"</p>

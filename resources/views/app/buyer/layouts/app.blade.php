@@ -35,7 +35,7 @@
             <x-buyer.header />
 
             {{-- Content --}}
-            <main class="flex-grow p-8 md:p-10">
+            <main class="flex-grow p-8 md:p-10" x-data="{ reviewModalOpen: false }">
                 @yield('content')
             </main>
 
