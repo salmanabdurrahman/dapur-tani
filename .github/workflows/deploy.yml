@@ -1,5 +1,5 @@
 name: Deploy Laravel to cPanel via Git Pull
-description: This workflow deploys a Laravel application to a cPanel server using SSH and Git pull.
+description: This workflow deploys the Laravel application to cPanel by pulling the latest changes from the main branch using SSH.
 
 on:
   push:
@@ -11,20 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Set up SSH key to connect to the server
-    - name: Setup SSH
-      uses: webfactory/ssh-agent@v0.9.0
-      with:
-        ssh-private-key: ${{ secrets.SSH_KEY }}
-
-    # Step 2: Set up Deploy Key to enable git pull
-    - name: Setup Deploy Key
-      uses: webfactory/ssh-agent@v0.9.0
-      with:
-        ssh-private-key: ${{ secrets.DEPLOY_KEY }}
-
-    # Step 3: Run deployment commands on the cPanel server
-    - name: Deploy and Run Commands
+    - name: Deploy to cPanel
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -35,15 +22,24 @@ jobs:
         script: |
           cd /home/salmanab/dapurtani.salmanabdurrahman.my.id
           
+          echo "Setting up SSH Agent for Git Pull..."
+          eval $(ssh-agent -s)
+          ssh-add <(echo "${{ secrets.DEPLOY_KEY }}")
+          
+          echo "Pulling latest changes from main branch..."
           git pull origin main
           
+          echo "Installing Composer dependencies..."
           composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
           
+          echo "Installing NPM dependencies and building assets..."
           npm install
           npm run build
           
+          echo "Running database migrations..."
           php artisan migrate --force
           
+          echo "Optimizing application..."
           php artisan filament:optimize
           php artisan filament:optimize-clear
           php artisan optimize:clear
