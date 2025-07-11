@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->string('payment_gateway_ref')->nullable();
             $table->text('shipping_address');
             $table->text('notes')->nullable();
+            $table->string('snap_token')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

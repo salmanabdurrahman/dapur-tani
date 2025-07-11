@@ -82,7 +82,7 @@
                                         {{ Gloudemans\Shoppingcart\Facades\Cart::total(0, ',', '.') }}</span>
                                 </div>
                             </div>
-                            <a href="#"
+                            <a href="{{ route('buyer.checkout.index') }}"
                                 class="mt-6 w-full block text-center bg-primary-600 text-white py-3.5 rounded-lg text-lg font-bold hover:bg-primary-700 transition-colors">Lanjut
                                 ke Checkout</a>
                         </div>
