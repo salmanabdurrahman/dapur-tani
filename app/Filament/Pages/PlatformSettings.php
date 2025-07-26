@@ -49,6 +49,21 @@ class PlatformSettings extends Page
                             ->prefix('Rp')
                             ->helperText('Jumlah minimum yang bisa ditarik oleh supplier.'),
                     ])->columns(2),
+
+                Section::make('Pengaturan Umum')
+                    ->description('Pengaturan umum untuk tampilan dan informasi platform.')
+                    ->schema([
+                        TextInput::make('contact_email')
+                            ->label('Email Kontak Utama')
+                            ->email()
+                            ->required()
+                            ->helperText('Email yang ditampilkan di halaman "Hubungi Kami".'),
+                        TextInput::make('contact_phone')
+                            ->label('Nomor Telepon Utama')
+                            ->tel()
+                            ->required()
+                            ->helperText('Nomor telepon yang ditampilkan di halaman "Hubungi Kami".'),
+                    ])->columns(2),
             ])
             ->statePath('data');
     }

@@ -41,24 +41,21 @@ class ReviewResource extends Resource
             ->schema([
                 Forms\Components\Section::make('Detail Ulasan')
                     ->schema([
-                        Forms\Components\TextInput::make('user.name')
+                        Forms\Components\TextInput::make('user_name')
                             ->label('Nama Pengulas')
-                            ->disabled(),
-                        Forms\Components\TextInput::make('product.name')
+                            ->formatStateUsing(fn($record) => $record?->user?->name),
+                        Forms\Components\TextInput::make('product_name')
                             ->label('Produk yang Diulas')
-                            ->disabled(),
+                            ->formatStateUsing(fn($record) => $record?->product?->name),
                         Forms\Components\TextInput::make('rating')
-                            ->label('Rating Diberikan')
-                            ->disabled(),
+                            ->label('Rating Diberikan'),
                         Forms\Components\DateTimePicker::make('created_at')
-                            ->label('Tanggal Ulasan')
-                            ->disabled(),
+                            ->label('Tanggal Ulasan'),
                         Forms\Components\Textarea::make('comment')
                             ->label('Isi Komentar')
-                            ->disabled()
                             ->columnSpanFull(),
                     ])->columns(2),
-            ]);
+            ])->disabled();
     }
 
     public static function table(Table $table): Table
@@ -89,13 +86,16 @@ class ReviewResource extends Resource
                     ->label('Tampilkan'),
             ])
             ->filters([
-                //
+                Tables\Filters\TernaryFilter::make('is_visible')->label('Status Tampil'),
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\ForceDeleteAction::make(),
+                    Tables\Actions\RestoreAction::make(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -126,6 +126,7 @@ class ReviewResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
+            ->with(['user', 'product'])
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);

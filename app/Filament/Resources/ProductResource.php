@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\Admin\ProductResource\RelationManagers\ReviewsRelationManager;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
@@ -11,6 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProductResource extends Resource
@@ -30,6 +32,11 @@ class ProductResource extends Resource
         return false;
     }
 
+    public static function canEdit(Model $record): bool
+    {
+        return false;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -37,19 +44,15 @@ class ProductResource extends Resource
                 Forms\Components\Section::make('Informasi Produk')
                     ->schema([
                         Forms\Components\TextInput::make('name')
-                            ->label('Nama Produk')
-                            ->disabled(),
+                            ->label('Nama Produk'),
                         Forms\Components\TextInput::make('supplier.name')
                             ->label('Nama Supplier')
-                            ->disabled()
-                            ->default(fn($record) => $record?->supplier?->name),
+                            ->formatStateUsing(fn($record) => $record?->supplier?->name),
                         Forms\Components\TextInput::make('category.name')
                             ->label('Kategori')
-                            ->disabled()
-                            ->default(fn($record) => $record?->category?->name),
+                            ->formatStateUsing(fn($record) => $record?->category?->name),
                         Forms\Components\RichEditor::make('description')
                             ->label('Deskripsi')
-                            ->disabled()
                             ->columnSpanFull(),
                     ])->columns(2),
 
@@ -57,34 +60,29 @@ class ProductResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('price')
                             ->label('Harga')
-                            ->prefix('Rp')
-                            ->disabled(),
+                            ->prefix('IDR'),
                         Forms\Components\TextInput::make('unit')
-                            ->label('Satuan')
-                            ->disabled(),
+                            ->label('Satuan'),
                         Forms\Components\TextInput::make('stock_quantity')
-                            ->label('Jumlah Stok')
-                            ->disabled(),
+                            ->label('Jumlah Stok'),
                     ])->columns(3),
 
                 Forms\Components\Section::make('Media & Status')
                     ->schema([
                         Forms\Components\FileUpload::make('main_image_path')
-                            ->label('Gambar Utama')
-                            ->disabled(),
-                        Forms\Components\TextInput::make('is_active')
-                            ->label('Status Jual')
-                            ->disabled()
-                            ->formatStateUsing(fn($state) => $state ? 'Aktif' : 'Tidak Aktif'),
+                            ->label('Gambar Utama'),
+                        Forms\Components\Toggle::make('is_active')
+                            ->label('Status Jual'),
                     ]),
-            ]);
+            ])->disabled();
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('main_image_path')->label('Gambar'),
+                Tables\Columns\ImageColumn::make('main_image_path')
+                    ->label('Gambar'),
 
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama Produk')
@@ -101,12 +99,7 @@ class ProductResource extends Resource
                     ->sortable(),
 
                 Tables\Columns\ToggleColumn::make('is_active')
-                    ->label('Status Jual')
-                    ->onColor('success')
-                    ->offColor('danger')
-                    ->onIcon('heroicon-s-check-circle')
-                    ->offIcon('heroicon-s-x-circle')
-                    ->default(true)
+                    ->label('Status Jual'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('supplier')
@@ -115,6 +108,8 @@ class ProductResource extends Resource
                     ->preload(),
                 Tables\Filters\SelectFilter::make('category')
                     ->relationship('category', 'name'),
+                Tables\Filters\TernaryFilter::make('is_active')
+                    ->label('Status Jual'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -125,7 +120,7 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ReviewsRelationManager::class
         ];
     }
 
@@ -137,5 +132,14 @@ class ProductResource extends Resource
             'view' => Pages\ViewProduct::route('/{record}'),
             // 'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->with(['supplier', 'category'])
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }

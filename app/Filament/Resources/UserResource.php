@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enums\UserRole;
+use App\Filament\Resources\Admin\UserResource\RelationManagers\ProfileRelationManager;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
@@ -46,11 +47,7 @@ class UserResource extends Resource
                             ->options(UserRole::class)
                             ->required(),
                         Forms\Components\Select::make('status')
-                            ->options([
-                                'pending' => 'Pending',
-                                'verified' => 'Verified',
-                                'suspended' => 'Suspended',
-                            ])
+                            ->options(['pending' => 'Pending', 'verified' => 'Verified', 'suspended' => 'Suspended'])
                             ->required(),
                         Forms\Components\TextInput::make('password')
                             ->label('Password Baru')
@@ -69,17 +66,27 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama')
                     ->searchable(),
+
+                Tables\Columns\TextColumn::make('profile.business_name')
+                    ->label('Nama Usaha')
+                    ->searchable()
+                    ->placeholder('N/A'),
+
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('role')
                     ->badge(),
+
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
                         'pending' => 'warning',
                         'verified' => 'success',
                         'suspended' => 'danger',
+                        default => 'gray',
                     }),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Tanggal Daftar')
                     ->dateTime()
@@ -89,41 +96,30 @@ class UserResource extends Resource
                 Tables\Filters\SelectFilter::make('role')
                     ->options(UserRole::class),
                 Tables\Filters\SelectFilter::make('status')
-                    ->options([
-                        'pending' => 'Pending',
-                        'verified' => 'Verified',
-                        'suspended' => 'Suspended',
-                    ]),
+                    ->options(['pending' => 'Pending', 'verified' => 'Verified', 'suspended' => 'Suspended']),
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                // Tables\Actions\Action::make('verify')
-                //     ->label('Verifikasi')
-                //     ->icon('heroicon-o-check-circle')
-                //     ->color('success')
-                //     ->requiresConfirmation()
-                //     ->action(fn(User $record) => $record->update(['status' => 'verified']))
-                //     ->visible(fn(User $record): bool => $record->status === 'pending'),
-
-                Tables\Actions\Action::make('suspend')
-                    ->label('Suspend')
-                    ->icon('heroicon-o-x-circle')
-                    ->color('danger')
-                    ->requiresConfirmation()
-                    ->action(fn(User $record) => $record->update(['status' => 'suspended']))
-                    ->visible(fn(User $record): bool => $record->status === 'verified'),
-
-                Tables\Actions\Action::make('verify')
-                    ->label('Verifikasi')
-                    ->icon('heroicon-o-check-circle')
-                    ->color('success')
-                    ->requiresConfirmation()
-                    ->action(fn(User $record) => $record->update(['status' => 'verified']))
-                    ->visible(fn(User $record): bool => $record->status === 'pending' || $record->status === 'suspended'),
-
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\Action::make('verify')
+                        ->label('Verifikasi')
+                        ->icon('heroicon-o-check-circle')
+                        ->color('success')
+                        ->requiresConfirmation()
+                        ->action(fn(User $record) => $record->update(['status' => 'verified']))
+                        ->visible(fn(User $record): bool => in_array($record->status, ['pending', 'suspended'])),
+                    Tables\Actions\Action::make('suspend')
+                        ->label('Suspend')
+                        ->icon('heroicon-o-x-circle')
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->action(fn(User $record) => $record->update(['status' => 'suspended']))
+                        ->visible(fn(User $record): bool => $record->status === 'verified'),
+                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\ForceDeleteAction::make(),
+                    Tables\Actions\RestoreAction::make(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -137,7 +133,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ProfileRelationManager::class,
         ];
     }
 

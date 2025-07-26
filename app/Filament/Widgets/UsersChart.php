@@ -11,7 +11,7 @@ class UsersChart extends ChartWidget
 {
     protected static ?string $heading = 'Pendaftaran Pengguna Baru';
     protected int|string|array $columnSpan = 'full';
-    protected static ?int $sort = 2;
+    protected static ?int $sort = 3;
 
 
     protected function getData(): array

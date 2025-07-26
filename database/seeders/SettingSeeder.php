@@ -24,5 +24,17 @@ class SettingSeeder extends Seeder
             'label' => 'Minimum Payout (Rp)',
             'group' => 'keuangan'
         ]);
+
+        Setting::updateOrCreate(['key' => 'contact_email'], [
+            'value' => 'halo@dapurtani.com',
+            'label' => 'Email Kontak Utama',
+            'group' => 'umum'
+        ]);
+
+        Setting::updateOrCreate(['key' => 'contact_phone'], [
+            'value' => '(0274) 123-456',
+            'label' => 'Nomor Telepon Utama',
+            'group' => 'umum'
+        ]);
     }
 }

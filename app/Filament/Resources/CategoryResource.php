@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\Admin\CategoryResource\RelationManagers\ProductsRelationManager;
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Filament\Resources\CategoryResource\RelationManagers;
 use App\Models\Category;
@@ -30,7 +31,7 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make()
+                Forms\Components\Section::make('Detail Kategori')
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->label('Nama Kategori')
@@ -61,12 +62,15 @@ class CategoryResource extends Resource
                     ->label('Nama Kategori')
                     ->searchable()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('products_count')
                     ->counts('products')
                     ->label('Jumlah Produk')
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Tanggal Dibuat')
                     ->dateTime()
@@ -74,13 +78,15 @@ class CategoryResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\ForceDeleteAction::make(),
+                    Tables\Actions\RestoreAction::make(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -94,7 +100,7 @@ class CategoryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ProductsRelationManager::class
         ];
     }
 
