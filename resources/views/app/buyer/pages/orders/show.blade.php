@@ -119,16 +119,40 @@
                         <p class="text-xs text-slate-500 mt-2 text-center">Selesaikan pembayaran untuk melanjutkan
                             pesanan.
                         </p>
-                    @elseif (
-                        $order->status === \App\Enums\OrderStatus::COMPLETED &&
-                            $order->items->every(fn($item) => $item->product && $item->product->reviews->isEmpty()))
-                        <button @click="reviewModalOpen = true"
-                            class="w-full bg-amber-500 text-white font-bold px-4 py-3 rounded-lg hover:bg-amber-600 transition-colors flex items-center justify-center gap-2">
-                            <i class='bx bxs-star text-xl'></i><span>Beri Ulasan</span>
-                        </button>
-                        <p class="text-xs text-slate-500 mt-2 text-center">Terima kasih telah menyelesaikan pesanan ini.
-                            Silakan beri ulasan untuk produk yang Anda terima.
-                        </p>
+                    @elseif ($order->status === \App\Enums\OrderStatus::COMPLETED)
+                        @php
+                            $hasBeenReviewed = $order
+                                ->reviews()
+                                ->where('user_id', auth()->id())
+                                ->exists();
+                        @endphp
+
+                        @if ($hasBeenReviewed)
+                            <div class="space-y-4">
+                                <h4 class="font-semibold text-dark">Ulasan Anda</h4>
+                                @foreach ($order->reviews()->where('user_id', auth()->id())->get() as $review)
+                                    <div class="border rounded-lg p-3 bg-slate-50">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <span class="text-xs font-bold text-dark">{{ $review->product->name }}</span>
+                                            <div class="flex items-center gap-1 text-amber-400">
+                                                <span>{{ $review->rating }}</span>
+                                                <i class="bx bxs-star"></i>
+                                            </div>
+                                        </div>
+                                        <p class="text-sm text-slate-700 italic">
+                                            "{{ $review->comment ?? 'Tidak ada komentar' }}"</p>
+                                    </div>
+                                @endforeach
+                                <p class="text-xs text-slate-500 mt-2 text-center">Terima kasih telah memberikan ulasan!</p>
+                            </div>
+                        @else
+                            <button @click="reviewModalOpen = true"
+                                class="w-full bg-amber-500 text-white font-bold px-4 py-3 rounded-lg hover:bg-amber-600 transition-colors flex items-center justify-center gap-2">
+                                <i class='bx bxs-star text-xl'></i><span>Beri Ulasan</span>
+                            </button>
+                            <p class="text-xs text-slate-500 mt-2 text-center">Pesanan selesai. Silakan beri ulasan untuk
+                                produk yang Anda terima.</p>
+                        @endif
                     @else
                         <p class="text-sm text-slate-500">Tidak ada aksi yang tersedia untuk pesanan ini.</p>
                     @endif

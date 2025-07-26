@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Frontend\StoreCartRequest;
+use App\Http\Requests\Frontend\UpdateCartRequest;
 use App\Models\Product;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\RedirectResponse;
@@ -32,21 +34,15 @@ class CartController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreCartRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1',
-        ]);
+        $validated = $request->validated();
 
         try {
-            $product = Product::firstWhere('id', $validated['product_id']);
-            if (!$product) {
-                return back()->with('error', 'Produk tidak ditemukan.');
-            }
+            $product = Product::findOrFail($validated['product_id']);
 
             if ($product->stock_quantity < $validated['quantity']) {
-                return back()->with('error', 'Stok produk tidak cukup.');
+                return back()->with('error', 'Stok produk tidak mencukupi.');
             }
 
             Cart::add(
@@ -63,13 +59,14 @@ class CartController extends Controller
 
             return redirect()->route('cart.index')->with('success', 'Produk berhasil ditambahkan ke keranjang.');
         } catch (\Exception $e) {
-            Log::error('Cart item creation failed', [
+            Log::error('Cart item addition failed', [
                 'error' => $e->getMessage(),
                 'data' => $validated,
             ]);
 
-            return back()->with('error', 'Gagal menambahkan produk ke keranjang. Silakan coba lagi.');
+            return back()->with('error', 'Gagal menambahkan produk ke keranjang.');
         }
+
     }
 
     /**
@@ -91,14 +88,12 @@ class CartController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id): RedirectResponse
+    public function update(UpdateCartRequest $request, string $id): RedirectResponse
     {
-        $validated = $request->validate([
-            'quantity' => 'required|integer|min:1',
-        ]);
+        $validated = $request->validated();
 
         try {
-            Cart::update($request->rowId, $validated['quantity']);
+            Cart::update($validated['rowId'], $validated['quantity']);
 
             return redirect()->route('cart.index')->with('success', 'Produk berhasil diperbarui di keranjang.');
         } catch (\Exception $e) {
@@ -107,26 +102,28 @@ class CartController extends Controller
                 'data' => $validated,
             ]);
 
-            return back()->with('error', 'Gagal memperbarui produk di keranjang. Silakan coba lagi.');
+            return back()->with('error', 'Gagal memperbarui produk di keranjang.');
         }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): RedirectResponse
+    public function destroy(Request $request): RedirectResponse
     {
-        try {
-            Cart::remove($id);
+        $request->validate(['rowId' => 'required|string']);
 
-            return redirect()->route('cart.index')->with('success', 'Produk berhasil dihapus dari keranjang.');
+        try {
+            Cart::remove($request->rowId);
+
+            return back()->with('success', 'Produk berhasil dihapus dari keranjang.');
         } catch (\Exception $e) {
-            Log::error('Cart item deletion failed', [
+            Log::error('Cart item removal failed', [
                 'error' => $e->getMessage(),
-                'rowId' => $id,
+                'rowId' => $request->rowId,
             ]);
 
-            return back()->with('error', 'Gagal menghapus produk dari keranjang. Silakan coba lagi.');
+            return back()->with('error', 'Gagal menghapus produk dari keranjang.');
         }
     }
 }

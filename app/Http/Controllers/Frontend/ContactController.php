@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Frontend\StoreContactRequest;
 use App\Models\Contact;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -30,26 +31,21 @@ class ContactController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreContactRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'subject' => 'required|string|max:255',
-            'message' => 'required|string|min:10|max:5000',
-        ]);
+        $validated = $request->validated();
 
         try {
             Contact::create($validated);
 
-            return back()->with('success', 'Formulir kontak berhasil dikirim.');
+            return back()->with('success', 'Pesan Anda telah berhasil terkirim!');
         } catch (\Exception $e) {
             Log::error('Contact form submission failed', [
                 'error' => $e->getMessage(),
                 'data' => $validated,
             ]);
 
-            return back()->with('error', 'Gagal mengirimkan formulir kontak. Silakan coba lagi nanti.');
+            return back()->with('error', 'Gagal mengirimkan pesan. Silakan coba lagi nanti.');
         }
     }
 

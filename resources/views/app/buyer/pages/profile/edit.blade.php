@@ -5,7 +5,7 @@
 @section('content')
     <section class="mb-8">
         <h1 class="text-3xl font-extrabold text-dark">Pengaturan Akun</h1>
-        <p class="text-slate-500 mt-1">Kelola informasi profil, alamat, dan keamanan akun Anda.</p>
+        <p class="text-slate-500 mt-1">Kelola informasi profil, alamat, keamanan akun, dan detail bank Anda.</p>
     </section>
     <section x-data="{ activeTab: '{{ old('tab', $openTab) }}' }">
         <div class="border-b border-slate-200 mb-8">
@@ -37,6 +37,15 @@
                         "
                     :class="{ 'border-primary-600 text-primary-600': activeTab === 'security', 'border-transparent text-slate-500 hover:text-dark': activeTab !== 'security' }"
                     class="whitespace-nowrap py-4 px-1 border-b-4 font-bold transition-colors">Keamanan</button>
+                <button
+                    @click="
+                        activeTab = 'bank';
+                        const url = new URL(window.location);
+                        url.search = '?tab=bank';
+                        window.history.replaceState({}, '', url);
+                        "
+                    :class="{ 'border-primary-600 text-primary-600': activeTab === 'bank', 'border-transparent text-slate-500 hover:text-dark': activeTab !== 'bank' }"
+                    class="whitespace-nowrap py-4 px-1 border-b-4 font-bold transition-colors">Detail Bank</button>
             </nav>
         </div>
         <div>
@@ -218,6 +227,51 @@
                             <button type="submit"
                                 class="bg-primary-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-primary-700 transition-colors shadow-sm hover:shadow-lg">Ganti
                                 Password</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div x-show="activeTab === 'bank'" x-transition>
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+                    <h2 class="text-xl font-bold text-dark">Ganti Detail Bank</h2>
+                    <p class="text-slate-500 mt-1 mb-6">Perbarui informasi rekening bank Anda.</p>
+                    <form action="{{ route('buyer.settings.updateBankDetails') }}" method="POST" class="space-y-6">
+                        @csrf
+                        @method('PUT')
+                        <div>
+                            <label for="bank_name" class="font-semibold text-dark">Nama Bank</label>
+                            <input type="text" id="bank_name" name="bank_name"
+                                class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
+                                value="{{ old('bank_name', $user->profile->bank_name ?? '') }}"
+                                placeholder="Masukkan nama bank" required>
+                            @error('bank_name')
+                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div>
+                            <label for="bank_account_number" class="font-semibold text-dark">Nomor Rekening Bank</label>
+                            <input type="text" id="bank_account_number" name="bank_account_number"
+                                class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
+                                value="{{ old('bank_account_number', $user->profile->bank_account_number ?? '') }}"
+                                placeholder="Masukkan nomor rekening bank" required>
+                            @error('bank_account_number')
+                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div>
+                            <label for="bank_account_name" class="font-semibold text-dark">Nama Pemilik Rekening</label>
+                            <input type="text" id="bank_account_name" name="bank_account_name"
+                                class="mt-2 w-full px-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
+                                value="{{ old('bank_account_name', $user->profile->bank_account_name ?? '') }}"
+                                placeholder="Masukkan nama pemilik rekening" required>
+                            @error('bank_account_name')
+                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="text-right pt-4 border-t border-slate-200">
+                            <button type="submit"
+                                class="bg-primary-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-primary-700 transition-colors shadow-sm hover:shadow-lg">Simpan
+                                Detail Bank</button>
                         </div>
                     </form>
                 </div>

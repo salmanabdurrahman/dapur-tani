@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Frontend\StoreSubscriptionRequest;
 use App\Models\Subscription;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -10,11 +11,9 @@ use Illuminate\Support\Facades\Log;
 
 class SubscriptionController extends Controller
 {
-    public function store(Request $request): RedirectResponse
+    public function store(StoreSubscriptionRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'email_subscription' => 'required|email|unique:subscriptions,email',
-        ]);
+        $validated = $request->validated();
 
         try {
             Subscription::create([

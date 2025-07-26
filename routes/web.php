@@ -1,16 +1,16 @@
 <?php
 
 use App\Http\Controllers\Auth\BuyerAuthController;
+use App\Http\Controllers\Buyer\CheckoutController;
 use App\Http\Controllers\Buyer\DashboardController;
 use App\Http\Controllers\Buyer\OrderController;
 use App\Http\Controllers\Buyer\ProfileController;
+use App\Http\Controllers\Buyer\ReviewController;
 use App\Http\Controllers\Frontend\AboutUsController;
 use App\Http\Controllers\Frontend\CartController;
-use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ProductController;
-use App\Http\Controllers\Frontend\ReviewController;
 use App\Http\Controllers\Frontend\SubscriptionController;
 use Illuminate\Support\Facades\Route;
 
@@ -56,6 +56,7 @@ Route::middleware('role:buyer')->prefix('buyer')->name('buyer.')->group(function
     Route::put('settings/profile', [ProfileController::class, 'updateProfile'])->name('settings.updateProfile');
     Route::put('settings/address', [ProfileController::class, 'updateAddress'])->name('settings.updateAddress');
     Route::put('settings/password', [ProfileController::class, 'updatePassword'])->name('settings.updatePassword');
+    Route::put('settings/bank-details', [ProfileController::class, 'updateBankDetails'])->name('settings.updateBankDetails');
 
     Route::resource('checkout', CheckoutController::class)->only(['index', 'store']);
 });

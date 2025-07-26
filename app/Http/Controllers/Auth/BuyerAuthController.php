@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\BuyerLoginRequest;
+use App\Http\Requests\Auth\BuyerRegisterRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
@@ -21,24 +25,21 @@ class BuyerAuthController extends Controller
         return view('app.frontend.pages.auth.create', compact('openTab', 'title'));
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(BuyerRegisterRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => 'required|string|min:3|max:255',
-            'email' => 'required|email|max:255|unique:users,email',
-            'password' => 'required|string|min:8',
-        ]);
+        $validated = $request->validated();
 
         try {
             User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
-                'password' => bcrypt($validated['password']),
-                'role' => 'buyer',
-                'status' => 'pending',
+                'password' => Hash::make($validated['password']),
+                'role' => UserRole::BUYER->value,
+                'status' => 'verified',
             ]);
 
-            return redirect()->to('/auth?o=login')->with('success', 'Akun berhasil dibuat. Silakan masuk untuk melanjutkan.');
+            return redirect()->route('auth.create', ['o' => 'login'])
+                ->with('success', 'Akun berhasil dibuat. Silakan masuk untuk melanjutkan.');
         } catch (\Exception $e) {
             Log::error('Buyer account creation failed', [
                 'error' => $e->getMessage(),
@@ -49,19 +50,21 @@ class BuyerAuthController extends Controller
         }
     }
 
-    public function login(Request $request): RedirectResponse
+    public function login(BuyerLoginRequest $request): RedirectResponse
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
-        ]);
+        $credentials = $request->validated();
+
+        $credentials['role'] = UserRole::BUYER->value;
 
         if (auth()->attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('buyer.dashboard')->with('success', 'Selamat datang di dashboard pembeli!');
+            return redirect()->intended(route('buyer.dashboard'))
+                ->with('success', 'Selamat datang di dashboard pembeli!');
         }
 
-        return redirect()->to('/auth?o=login')->with('error', 'Email atau kata sandi salah. Silakan coba lagi.');
+        return back()->withErrors([
+            'email' => 'Email atau password yang Anda masukkan salah.',
+        ])->onlyInput('email');
     }
 
     public function logout(Request $request): RedirectResponse
@@ -70,6 +73,7 @@ class BuyerAuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->to('/auth?o=login')->with('success', 'Anda telah berhasil keluar.');
+        return redirect()->route('auth.create', ['o' => 'login'])
+            ->with('success', 'Anda telah berhasil keluar.');
     }
 }

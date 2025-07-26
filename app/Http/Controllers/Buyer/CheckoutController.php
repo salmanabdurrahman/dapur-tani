@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Frontend;
+namespace App\Http\Controllers\Buyer;
 
 use App\Enums\OrderStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Buyer\StoreCheckoutRequest;
 use App\Models\Order;
+use App\Models\Product;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -31,7 +33,7 @@ class CheckoutController extends Controller
     {
         $cartItems = Cart::content();
         if ($cartItems->isEmpty()) {
-            return redirect()->route('cart.index')->with('error', 'Keranjang belanja Anda kosong.');
+            return redirect()->route('cart.index')->with('error', 'Keranjang belanja Anda masih kosong.');
         }
 
         return view('app.frontend.pages.checkout.index', compact('cartItems'));
@@ -48,7 +50,7 @@ class CheckoutController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse|View
+    public function store(StoreCheckoutRequest $request): RedirectResponse|View
     {
         DB::beginTransaction();
 
@@ -70,6 +72,11 @@ class CheckoutController extends Controller
                     'price_per_unit' => $item->price,
                     'quantity' => $item->qty,
                 ]);
+
+                $product = Product::find($item->id);
+                if ($product) {
+                    $product->decrement('stock_quantity', $item->qty);
+                }
             }
 
             $params = [
@@ -80,14 +87,14 @@ class CheckoutController extends Controller
                 'customer_details' => [
                     'first_name' => $user->name,
                     'email' => $user->email,
-                    'phone' => $user->profile->phone,
+                    'phone' => $user->profile->phone_number,
                 ],
             ];
 
             $snapToken = Snap::getSnapToken($params);
             $order->update(['snap_token' => $snapToken]);
-            DB::commit();
 
+            DB::commit();
             Cart::destroy();
 
             return view('app.frontend.pages.checkout.success', compact('order', 'snapToken'))->with('success', 'Checkout berhasil. Silakan selesaikan pembayaran.');
