@@ -29,7 +29,6 @@
                 timer: 3000,
                 toast: true,
                 timerProgressBar: true,
-                width: 420,
             });
         });
     </script>

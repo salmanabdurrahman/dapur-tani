@@ -42,8 +42,15 @@ class RecurringOrderController extends Controller
 
         try {
             Auth::user()->recurringOrders()->updateOrCreate(
-                ['product_id' => $validated['product_id']],
-                $validated
+                [
+                    'product_id' => $validated['product_id'],
+                ],
+                [
+                    'quantity' => $validated['quantity'],
+                    'frequency' => $validated['frequency'],
+                    'day_of_week' => $validated['day_of_week'],
+                    'is_active' => true,
+                ]
             );
 
             return redirect()->route('buyer.recurring-orders.index')->with('success', 'Jadwal langganan berhasil disimpan!');
