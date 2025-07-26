@@ -18,6 +18,11 @@
                 <i class='bx bxs-package text-xl'></i>
                 <span>Pesanan Saya</span>
             </a>
+            <a href="{{ route('buyer.recurring-orders.index') }}"
+                class="flex items-center gap-3 px-4 py-2.5 font-semibold rounded-lg {{ request()->is('buyer/recurring-orders*') ? 'bg-primary-50 text-primary-600' : 'text-slate-600 hover:bg-slate-100 hover:text-dark' }}">
+                <i class='bx bx-repeat text-xl'></i>
+                <span>Langganan Saya</span>
+            </a>
             <a href="{{ route('buyer.settings.edit', ['tab' => 'profile']) }}"
                 class="flex items-center gap-3 px-4 py-2.5 font-semibold rounded-lg {{ request()->is('buyer/settings*') ? 'bg-primary-50 text-primary-600' : 'text-slate-600 hover:bg-slate-100 hover:text-dark' }}">
                 <i class='bx bxs-user-circle text-xl'></i>

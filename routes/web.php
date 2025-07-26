@@ -6,6 +6,7 @@ use App\Http\Controllers\Buyer\CheckoutController;
 use App\Http\Controllers\Buyer\DashboardController;
 use App\Http\Controllers\Buyer\OrderController;
 use App\Http\Controllers\Buyer\ProfileController;
+use App\Http\Controllers\Buyer\RecurringOrderController;
 use App\Http\Controllers\Buyer\ReviewController;
 use App\Http\Controllers\Frontend\AboutUsController;
 use App\Http\Controllers\Frontend\CartController;
@@ -56,6 +57,7 @@ Route::middleware('role:buyer')->prefix('buyer')->name('buyer.')->group(function
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('orders', OrderController::class)->only(['index', 'show']);
     Route::post('orders/{order}/review', [ReviewController::class, 'store'])->name('orders.review.store');
+    Route::resource('recurring-orders', RecurringOrderController::class)->only(['index', 'store', 'destroy']);
     Route::get('settings', [ProfileController::class, 'edit'])->name('settings.edit');
     Route::put('settings/profile', [ProfileController::class, 'updateProfile'])->name('settings.updateProfile');
     Route::put('settings/address', [ProfileController::class, 'updateAddress'])->name('settings.updateAddress');

@@ -3,7 +3,7 @@
 @section('title', "Jual $product->name Dengan Kualitas Terbaik - Dapur Tani")
 
 @section('content')
-    <main class="py-12 md:py-20 my-20">
+    <main class="py-12 md:py-20 my-20" x-data="{ subscribeModalOpen: false }">
         <section class="container mx-auto px-4 relative">
             <h1 class="text-4xl md:text-5xl font-extrabold text-dark tracking-tight mb-10">Detail {{ $product->name }}</h1>
             <div class="grid lg:grid-cols-2 gap-12 lg:gap-16">
@@ -135,6 +135,11 @@
                                 </svg>
                                 <span>Tambah ke Keranjang</span>
                             </button>
+                            <button @click="subscribeModalOpen = true" type="button"
+                                class="mt-4 w-full flex items-center justify-center gap-3 border-2 border-primary-600 text-primary-600 px-8 py-3.5 rounded-xl text-lg font-bold hover:bg-primary-50 transition-all">
+                                <i class='bx bx-calendar-event text-xl'></i>
+                                <span>Jadikan Pesanan Rutin</span>
+                            </button>
                         </div>
                     </form>
                     <div class="mt-8 pt-6 border-t border-slate-200">
@@ -265,5 +270,53 @@
                 </div>
             </div>
         </section>
+        {{-- Modal for product subscription --}}
+        <div x-show="subscribeModalOpen" x-cloak
+            class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" x-transition.opacity>
+            <div @click.away="subscribeModalOpen = false"
+                class="bg-white w-full max-w-lg rounded-2xl shadow-xl p-8 transform transition-all"
+                x-show="subscribeModalOpen" x-transition:enter="ease-out duration-300"
+                x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100">
+                <h2 class="text-2xl font-bold text-dark mb-4">Atur Langganan untuk {{ $product->name }}</h2>
+                <form action="{{ route('buyer.recurring-orders.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="sub-quantity" class="font-semibold text-dark">Kuantitas per Pengiriman</label>
+                            <input type="number" id="sub-quantity" name="quantity" value="1" min="1"
+                                class="mt-2 w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:ring-primary-500 focus:border-primary-500">
+                        </div>
+                        <div>
+                            <label for="sub-frequency" class="font-semibold text-dark">Frekuensi</label>
+                            <select id="sub-frequency" name="frequency"
+                                class="mt-2 w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:ring-primary-500 focus:border-primary-500">
+                                <option value="weekly">Setiap Minggu</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="sub-day" class="font-semibold text-dark">Hari Pengiriman</label>
+                            <select id="sub-day" name="day_of_week"
+                                class="mt-2 w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:ring-primary-500 focus:border-primary-500">
+                                <option value="monday">Senin</option>
+                                <option value="tuesday">Selasa</option>
+                                <option value="wednesday">Rabu</option>
+                                <option value="thursday">Kamis</option>
+                                <option value="friday">Jumat</option>
+                                <option value="saturday">Sabtu</option>
+                                <option value="sunday">Minggu</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex justify-end gap-4 mt-8 pt-6 border-t border-slate-200">
+                        <button type="button" @click="subscribeModalOpen = false"
+                            class="bg-slate-100 text-dark font-bold px-6 py-2.5 rounded-lg hover:bg-slate-200">Batal</button>
+                        <button type="submit"
+                            class="bg-primary-600 text-white font-bold px-6 py-2.5 rounded-lg hover:bg-primary-700">Simpan
+                            Langganan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </main>
 @endsection

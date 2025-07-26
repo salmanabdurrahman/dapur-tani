@@ -50,7 +50,7 @@
                 </thead>
                 <tbody>
                     @forelse ($recentOrders as $order)
-                        <tr class="border-b border-slate-100">
+                        <tr class="border-b border-slate-100 last:border-b-0">
                             <td class="p-4 font-semibold text-dark">{{ $order->order_number }}</td>
                             <td class="p-4">{{ $order->created_at->format('d F Y') }}</td>
                             <td class="p-4 font-semibold">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
