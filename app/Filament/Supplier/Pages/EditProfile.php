@@ -10,6 +10,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -35,11 +36,12 @@ class EditProfile extends Page implements HasForms
         $user = Auth::user();
         $profile = $user->profile()->firstOrCreate();
 
-        $this->profileForm->fill(array_merge(
+        $formData = array_merge(
             $user->only(['name', 'email']),
-            $profile->only(['business_name', 'phone_number', 'address', 'city', 'province', 'bank_name', 'bank_account_number', 'bank_account_name'])
-        ));
+            $profile->only(['business_name', 'phone_number', 'address', 'city', 'province', 'bank_name', 'bank_account_number', 'bank_account_name', 'profile_photo_path'])
+        );
 
+        $this->profileForm->fill($formData);
         $this->passwordForm->fill();
     }
 
@@ -59,29 +61,53 @@ class EditProfile extends Page implements HasForms
                     ->schema([
                         FileUpload::make('profile_photo_path')
                             ->label('Logo / Foto Profil')
-                            ->image()->imageEditor()->directory('profile-photos'),
-                        TextInput::make('business_name')->label('Nama Bisnis')->required(),
-                        TextInput::make('name')->label('Nama Kontak (PIC)')->required(),
-                        TextInput::make('email')->label('Email')->email()->disabled(),
-                        TextInput::make('phone_number')->label('Nomor Telepon')->tel()->required(),
+                            ->image()
+                            ->imageEditor()
+                            ->directory('profile-photos'),
+                        TextInput::make('business_name')
+                            ->label('Nama Bisnis')
+                            ->required(),
+                        TextInput::make('name')
+                            ->label('Nama Kontak (PIC)')
+                            ->required(),
+                        TextInput::make('email')
+                            ->label('Email')
+                            ->email()
+                            ->disabled(),
+                        TextInput::make('phone_number')
+                            ->label('Nomor Telepon')
+                            ->tel()
+                            ->required(),
                     ])->columns(2),
 
                 Section::make('Alamat')
                     ->schema([
-                        Textarea::make('address')->label('Alamat Lengkap')->required(),
-                        TextInput::make('city')->label('Kota/Kabupaten')->required(),
-                        TextInput::make('province')->label('Provinsi')->required(),
+                        Textarea::make('address')
+                            ->label('Alamat Lengkap')
+                            ->required(),
+                        TextInput::make('city')
+                            ->label('Kota/Kabupaten')
+                            ->required(),
+                        TextInput::make('province')
+                            ->label('Provinsi')
+                            ->required(),
                     ])->columns(2),
 
                 Section::make('Informasi Bank untuk Payout')
                     ->description('Data ini akan digunakan untuk mentransfer hasil penjualan Anda.')
                     ->schema([
-                        TextInput::make('bank_name')->label('Nama Bank')->required(),
-                        TextInput::make('bank_account_number')->label('Nomor Rekening')->required()->numeric(),
-                        TextInput::make('bank_account_name')->label('Nama Pemilik Rekening')->required(),
+                        TextInput::make('bank_name')
+                            ->label('Nama Bank')
+                            ->required(),
+                        TextInput::make('bank_account_number')
+                            ->label('Nomor Rekening')
+                            ->required()
+                            ->numeric(),
+                        TextInput::make('bank_account_name')
+                            ->label('Nama Pemilik Rekening')
+                            ->required(),
                     ])->columns(3),
             ])
-            ->model(Auth::user()->profile()->firstOrCreate())
             ->statePath('profileData');
     }
 
@@ -146,30 +172,33 @@ class EditProfile extends Page implements HasForms
             'bank_account_name' => $data['bank_account_name'],
         ];
 
-        if (!empty($data['profile_photo_path'])) {
+        if (isset($data['profile_photo_path']) && !is_string($data['profile_photo_path'])) {
             if ($user->profile->profile_photo_path) {
                 Storage::disk('public')->delete($user->profile->profile_photo_path);
             }
-            $profileData['profile_photo_path'] = $data['profile_photo_path'];
+            $profileData['profile_photo_path'] = $data['profile_photo_path'][0] ?? null;
         }
 
         $user->update($userData);
         $user->profile->update($profileData);
 
-        $this->dispatch('saved');
+        Notification::make()
+            ->title('Profil berhasil disimpan!')
+            ->success()
+            ->send();
+
+        $this->mount();
     }
 
     public function savePassword(): void
     {
         $data = $this->passwordForm->getState();
-
-        Auth::user()->update([
-            'password' => Hash::make($data['new_password']),
-        ]);
-
+        Auth::user()->update(['password' => Hash::make($data['new_password'])]);
         $this->passwordForm->fill();
-        $this->dispatch('saved');
+
+        Notification::make()
+            ->title('Password berhasil diganti!')
+            ->success()
+            ->send();
     }
-
-
 }

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Supplier\Resources;
 
+use App\Enums\OrderStatus;
 use App\Filament\Supplier\Resources\PayoutResource\Pages;
 use App\Filament\Supplier\Resources\PayoutResource\RelationManagers;
 use App\Models\Payout;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PayoutResource extends Resource
 {
@@ -34,10 +36,25 @@ class PayoutResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $supplierId = Auth::id();
+
+        $totalRevenue = DB::table('order_items')
+            ->join('products', 'order_items.product_id', '=', 'products.id')
+            ->join('orders', 'order_items.order_id', '=', 'orders.id')
+            ->where('products.supplier_id', $supplierId)
+            ->where('orders.status', OrderStatus::COMPLETED)
+            ->sum(DB::raw('order_items.quantity * order_items.price_per_unit'));
+
+        $totalWithdrawn = Payout::where('supplier_id', $supplierId)
+            ->whereIn('status', ['completed', 'pending'])
+            ->sum('amount');
+
+        $availableBalance = $totalRevenue - $totalWithdrawn;
+
         return $form
             ->schema([
                 Forms\Components\Section::make('Ajukan Penarikan Dana')
-                    ->description('Pastikan data rekening bank Anda di halaman profil sudah benar sebelum mengajukan.')
+                    ->description('Pastikan data rekening bank Anda di halaman profil sudah benar.')
                     ->schema([
                         Forms\Components\TextInput::make('amount')
                             ->label('Jumlah Penarikan')
@@ -45,7 +62,8 @@ class PayoutResource extends Resource
                             ->numeric()
                             ->prefix('Rp')
                             ->minValue(50000)
-                            ->helperText('Saldo Anda saat ini: Rp [NANTI KITA ISI DARI LOGIKA BISNIS]'),
+                            ->maxValue($availableBalance)
+                            ->helperText('Saldo Anda saat ini: Rp ' . number_format($availableBalance, 0, ',', '.')),
 
                         Forms\Components\Placeholder::make('rekening_tujuan')
                             ->label('Akan Ditransfer ke Rekening')
@@ -54,7 +72,7 @@ class PayoutResource extends Resource
                                 if ($profile && $profile->bank_name && $profile->bank_account_number) {
                                     return $profile->bank_name . ' - ' . $profile->bank_account_number . ' (a.n. ' . $profile->bank_account_name . ')';
                                 }
-                                return 'Harap lengkapi data rekening bank Anda di halaman pengaturan profil.';
+                                return new \Illuminate\Support\HtmlString('<span class="text-danger-600">Harap lengkapi data rekening bank Anda di halaman Pengaturan Profil.</span>');
                             }),
                     ]),
             ]);
@@ -75,6 +93,7 @@ class PayoutResource extends Resource
                         'pending' => 'warning',
                         'completed' => 'success',
                         'rejected' => 'danger',
+                        default => 'gray',
                     })
                     ->sortable(),
 
@@ -92,12 +111,8 @@ class PayoutResource extends Resource
                     ->label('Alasan Penolakan')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                //
-            ])
+            ->filters([])
+            ->actions([])
             ->bulkActions([]);
     }
 
@@ -120,5 +135,12 @@ class PayoutResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->where('supplier_id', Auth::id());
+    }
+
+    public static function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['supplier_id'] = Auth::id();
+        $data['status'] = 'pending';
+        return $data;
     }
 }

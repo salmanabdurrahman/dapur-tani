@@ -32,72 +32,69 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Informasi Produk')
-                    ->description('Deskripsikan produk Anda sejelas mungkin agar menarik bagi pembeli.')
-                    ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->label('Nama Produk')
-                            ->required()
-                            ->maxLength(255)
-                            ->live(onBlur: true)
-                            ->afterStateUpdated(fn(Forms\Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                Forms\Components\Wizard::make([
+                    Forms\Components\Wizard\Step::make('Informasi Dasar')
+                        ->icon('heroicon-o-identification')
+                        ->schema([
+                            Forms\Components\TextInput::make('name')
+                                ->label('Nama Produk')
+                                ->required()
+                                ->maxLength(
+                                    255
+                                )->live(onBlur: true)
+                                ->afterStateUpdated(fn(Forms\Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                            Forms\Components\TextInput::make('slug')
+                                ->required()
+                                ->maxLength(255)
+                                ->unique(Product::class, 'slug', ignoreRecord: true)
+                                ->readOnly()
+                                ->helperText('Slug akan dibuat otomatis.'),
+                            Forms\Components\Select::make('category_id')
+                                ->label('Kategori')
+                                ->relationship('category', 'name')
+                                ->searchable()
+                                ->preload()
+                                ->required(),
+                            Forms\Components\RichEditor::make('description')
+                                ->label('Deskripsi Lengkap Produk')
+                                ->required()
+                                ->columnSpanFull(),
+                        ])->columns(2),
 
-                        Forms\Components\TextInput::make('slug')
-                            ->required()
-                            ->maxLength(255)
-                            ->unique(Product::class, 'slug', ignoreRecord: true)
-                            ->readOnly()
-                            ->helperText('Slug akan dibuat otomatis berdasarkan nama produk.'),
+                    Forms\Components\Wizard\Step::make('Harga & Stok')
+                        ->icon('heroicon-o-currency-dollar')
+                        ->schema([
+                            Forms\Components\TextInput::make('price')
+                                ->label('Harga')
+                                ->required()
+                                ->numeric()
+                                ->prefix('Rp'),
+                            Forms\Components\TextInput::make('unit')
+                                ->label('Satuan')
+                                ->required()
+                                ->placeholder('Contoh: kg, ikat, buah'),
+                            Forms\Components\TextInput::make('stock_quantity')
+                                ->label('Jumlah Stok')
+                                ->required()
+                                ->numeric(),
+                        ])->columns(3),
 
-                        Forms\Components\Select::make('category_id')
-                            ->label('Kategori')
-                            ->relationship('category', 'name')
-                            ->searchable()
-                            ->preload()
-                            ->required(),
-
-                        Forms\Components\RichEditor::make('description')
-                            ->label('Deskripsi Lengkap Produk')
-                            ->required()
-                            ->columnSpanFull(),
-                    ])->columns(2),
-
-                Forms\Components\Section::make('Harga, Satuan & Stok')
-                    ->schema([
-                        Forms\Components\TextInput::make('price')
-                            ->label('Harga')
-                            ->required()
-                            ->numeric()
-                            ->prefix('Rp'),
-
-                        Forms\Components\TextInput::make('unit')
-                            ->label('Satuan')
-                            ->required()
-                            ->placeholder('Contoh: kg, ikat, buah, pack'),
-
-                        Forms\Components\TextInput::make('stock_quantity')
-                            ->label('Jumlah Stok')
-                            ->required()
-                            ->numeric(),
-                    ])->columns(3),
-
-                Forms\Components\Section::make('Media & Status')
-                    ->schema([
-                        Forms\Components\FileUpload::make('main_image_path')
-                            ->label('Gambar Utama Produk')
-                            ->image()
-                            ->imageEditor()
-                            ->directory('product-images')
-                            ->required(),
-
-                        Forms\Components\Toggle::make('is_active')
-                            ->label('Status Jual')
-                            ->helperText('Jika tidak aktif, produk tidak akan tampil di halaman depan.')
-                            ->onColor('success')
-                            ->offColor('danger')
-                            ->onIcon('heroicon-s-check-circle')
-                            ->offIcon('heroicon-s-x-circle')
-                    ]),
+                    Forms\Components\Wizard\Step::make('Media & Status')
+                        ->icon('heroicon-o-photo')
+                        ->schema([
+                            Forms\Components\FileUpload::make('main_image_path')
+                                ->label('Gambar Utama Produk')
+                                ->image()
+                                ->imageEditor()
+                                ->directory('product-images')
+                                ->required(),
+                            Forms\Components\Toggle::make('is_active')
+                                ->label('Status Jual')
+                                ->default(true)
+                                ->onColor('success')
+                                ->offColor('danger'),
+                        ]),
+                ])->columnSpanFull(),
             ]);
     }
 
@@ -105,7 +102,8 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('main_image_path')->label('Gambar'),
+                Tables\Columns\ImageColumn::make('main_image_path')
+                    ->label('Gambar'),
 
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama Produk')
@@ -124,19 +122,20 @@ class ProductResource extends Resource
 
                 Tables\Columns\TextColumn::make('stock_quantity')
                     ->label('Stok')
-                    ->numeric()
-                    ->sortable(),
+                    ->numeric()->sortable()
+                    ->color(fn(int $state): string => match (true) {
+                        $state === 0 => 'danger',
+                        $state < 10 => 'warning',
+                        default => 'success',
+                    }),
 
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Status Jual')
-                    ->boolean()
-                    ->trueIcon('heroicon-o-check-badge')
-                    ->falseIcon('heroicon-o-x-circle'),
+                    ->boolean(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('category')
-                    ->relationship('category', 'name')
-                    ->label('Filter Kategori'),
+                Tables\Filters\SelectFilter::make('category')->relationship('category', 'name')->label('Kategori'),
+                Tables\Filters\TernaryFilter::make('is_active')->label('Status Jual'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

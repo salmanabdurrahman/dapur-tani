@@ -12,6 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 
@@ -32,64 +33,58 @@ class OrderResource extends Resource
         return false;
     }
 
+    public static function canEdit(Model $record): bool
+    {
+        return false;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Group::make()
-                    ->schema([
-                        Forms\Components\Section::make('Detail Pesanan')
+                Forms\Components\Group::make()->schema([
+                    Forms\Components\Section::make('Detail Pesanan')->schema([
+                        Forms\Components\TextInput::make('order_number')
+                            ->label('ID Pesanan'),
+                        Forms\Components\TextInput::make('buyer_name')
+                            ->label('Nama Pembeli')
+                            ->formatStateUsing(fn($record) => $record->buyer->name),
+                        Forms\Components\TextInput::make('total_amount')
+                            ->label('Total Pembayaran')
+                            ->prefix('IDR'),
+                        Forms\Components\TextInput::make('status')
+                            ->label('Status Pesanan'),
+                        Forms\Components\DateTimePicker::make('created_at')
+                            ->label('Tanggal Dipesan'),
+                    ])->columns(2),
+
+                    Forms\Components\Section::make('Produk yang Dipesan')->schema([
+                        Forms\Components\Repeater::make('items')
+                            ->relationship()
                             ->schema([
-                                Forms\Components\TextInput::make('order_number')
-                                    ->label('ID Pesanan')
+                                Forms\Components\Select::make('product_id')
+                                    ->label('Produk')
+                                    ->relationship('product', 'name')
                                     ->disabled(),
-                                Forms\Components\TextInput::make('buyer.name')
-                                    ->label('Nama Pembeli')
+                                Forms\Components\TextInput::make('quantity')
+                                    ->numeric()
                                     ->disabled(),
-                                Forms\Components\TextInput::make('total_amount')
-                                    ->label('Total Pembayaran')
+                                Forms\Components\TextInput::make('price_per_unit')
+                                    ->label('Harga Satuan')
+                                    ->numeric()
                                     ->prefix('Rp')
                                     ->disabled(),
-                                Forms\Components\Select::make('status')
-                                    ->label('Status Pesanan')
-                                    ->options(OrderStatus::class)
-                                    ->disabled(),
-                            ])->columns(2),
+                            ])
+                            ->columns(3)->addable(false)->deletable(false),
+                    ]),
 
-                        Forms\Components\Section::make('Alamat Pengiriman')
-                            ->schema([
-                                Forms\Components\Textarea::make('shipping_address')
-                                    ->label('Alamat Lengkap')
-                                    ->disabled()
-                                    ->columnSpanFull(),
-                            ]),
-                    ])->columnSpan(['lg' => 2]),
-
-                Forms\Components\Group::make()
-                    ->schema([
-                        Forms\Components\Section::make('Produk yang Dipesan')
-                            ->schema([
-                                Forms\Components\Repeater::make('items')
-                                    ->relationship()
-                                    ->schema([
-                                        Forms\Components\Select::make('product_id')
-                                            ->label('Produk')
-                                            ->relationship('product', 'name')
-                                            ->disabled(),
-                                        Forms\Components\TextInput::make('quantity')
-                                            ->numeric()
-                                            ->disabled(),
-                                        Forms\Components\TextInput::make('price_per_unit')
-                                            ->label('Harga Satuan')
-                                            ->prefix('Rp')
-                                            ->disabled(),
-                                    ])
-                                    ->columns(3)
-                                    ->addable(false)
-                                    ->deletable(false),
-                            ]),
-                    ])->columnSpan(['lg' => 1]),
-            ])->columns(3);
+                    Forms\Components\Section::make('Alamat Pengiriman')->schema([
+                        Forms\Components\Textarea::make('shipping_address')
+                            ->label('Alamat Lengkap')
+                            ->rows(3),
+                    ]),
+                ])->columnSpanFull(),
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -110,16 +105,68 @@ class OrderResource extends Resource
                     ->label('Tanggal Pesan')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\SelectColumn::make('status')
-                    ->options(OrderStatus::class)
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn($state): string => match ($state instanceof OrderStatus ? $state->value : $state) {
+                        OrderStatus::PENDING_PAYMENT->value => 'gray',
+                        OrderStatus::PROCESSING->value => 'warning',
+                        OrderStatus::SHIPPED->value => 'info',
+                        OrderStatus::COMPLETED->value => 'success',
+                        OrderStatus::CANCELLED->value => 'danger',
+                        default => 'gray',
+                    })
                     ->sortable(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('status')
-                    ->options(OrderStatus::class)
+                //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('updateStatusToProcessing')
+                        ->label('Tandai sebagai "Diproses"')
+                        ->icon('heroicon-o-arrow-path')
+                        ->color('warning')
+                        ->requiresConfirmation()
+                        ->action(fn(Order $record) => $record->update(['status' => OrderStatus::PROCESSING]))
+                        ->visible(fn(Order $record): bool => $record->status === OrderStatus::PENDING_PAYMENT),
+
+                    Tables\Actions\Action::make('updateStatusToShipped')
+                        ->label('Tandai sebagai "Dikirim"')
+                        ->icon('heroicon-o-truck')
+                        ->color('info')
+                        ->requiresConfirmation()
+                        ->action(fn(Order $record) => $record->update(['status' => OrderStatus::SHIPPED]))
+                        ->visible(fn(Order $record): bool => $record->status === OrderStatus::PROCESSING),
+
+                    Tables\Actions\Action::make('updateStatusToDelivered')
+                        ->label('Tandai sebagai "Diterima Pembeli"')
+                        ->icon('heroicon-o-home')
+                        ->color('primary')
+                        ->requiresConfirmation()
+                        ->action(fn(Order $record) => $record->update(['status' => OrderStatus::DELIVERED]))
+                        ->visible(fn(Order $record): bool => $record->status === OrderStatus::SHIPPED),
+
+                    Tables\Actions\Action::make('updateStatusToCompleted')
+                        ->label('Tandai sebagai "Selesai"')
+                        ->icon('heroicon-o-check-circle')
+                        ->color('success')
+                        ->requiresConfirmation()
+                        ->action(fn(Order $record) => $record->update(['status' => OrderStatus::COMPLETED]))
+                        ->visible(fn(Order $record): bool => $record->status === OrderStatus::DELIVERED),
+
+                    Tables\Actions\Action::make('updateStatusToCancelled')
+                        ->label('Batalkan Pesanan')
+                        ->icon('heroicon-o-x-circle')
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->action(fn(Order $record) => $record->update(['status' => OrderStatus::CANCELLED]))
+                        ->visible(fn(Order $record): bool => in_array($record->status, [
+                            OrderStatus::PENDING_PAYMENT,
+                            OrderStatus::PROCESSING,
+                            OrderStatus::SHIPPED,
+                            OrderStatus::DELIVERED,
+                        ])),
+                ]),
             ])
             ->bulkActions([]);
     }
