@@ -25,7 +25,7 @@ class PayoutResource extends Resource
     protected static ?string $pluralModelLabel = 'Permintaan Payout';
     protected static ?string $label = 'Payout';
     protected static ?string $pluralLabel = 'Payout';
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 6;
 
     public static function canCreate(): bool
     {

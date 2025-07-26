@@ -23,7 +23,7 @@ class ReviewResource extends Resource
     protected static ?string $pluralModelLabel = 'Ulasan Produk';
     protected static ?string $label = 'Ulasan Produk';
     protected static ?string $pluralLabel = 'Ulasan Produk';
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 5;
 
     public static function canCreate(): bool
     {
