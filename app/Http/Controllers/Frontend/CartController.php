@@ -40,6 +40,7 @@ class CartController extends Controller
 
         try {
             $product = Product::findOrFail($validated['product_id']);
+            $price = $product->getDiscountedPrice() ?? $product->price;
 
             if ($product->stock_quantity < $validated['quantity']) {
                 return back()->with('error', 'Stok produk tidak mencukupi.');
@@ -49,7 +50,7 @@ class CartController extends Controller
                 $product->id,
                 $product->name,
                 $validated['quantity'],
-                $product->price,
+                $price,
                 0,
                 [
                     'image' => $product->main_image_path,

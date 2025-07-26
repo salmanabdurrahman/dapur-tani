@@ -27,7 +27,7 @@ class PayoutResource extends Resource
     protected static ?string $pluralModelLabel = 'Pendapatan';
     protected static ?string $label = 'Payout';
     protected static ?string $pluralLabel = 'Payout';
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
 
     public static function canEdit(Model $record): bool
     {

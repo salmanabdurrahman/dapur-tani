@@ -26,7 +26,7 @@ class EditProfile extends Page implements HasForms
     protected static string $view = 'filament.supplier.pages.edit-profile';
     protected static ?string $navigationLabel = 'Pengaturan Profil';
     protected static ?string $title = 'Pengaturan Profil';
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 6;
 
     public ?array $profileData = [];
     public ?array $passwordData = [];

@@ -61,11 +61,41 @@
                         <span class="text-slate-700">{{ $product->stock_quantity }} {{ $product->unit }}</span>
                     </div>
                     <div class="mt-8 pt-6 border-t border-slate-200">
+                        @php
+                            $promotion = $product->getActivePromotion();
+                            $discountedPrice = $product->getDiscountedPrice();
+                        @endphp
+
                         <p class="text-slate-500">Harga</p>
-                        <p class="text-4xl font-extrabold text-primary-600">
-                            Rp {{ number_format($product->price, 0, ',', '.') }} <span
-                                class="text-xl font-semibold text-slate-500">/ {{ $product->unit }}</span>
-                        </p>
+                        @if ($promotion)
+                            <div
+                                class="bg-red-100 text-red-600 text-sm font-bold px-3 py-1 mt-1 rounded-md items-center gap-1 inline-flex">
+                                <i class='bx bxs-discount'></i>
+                                <span>
+                                    @if ($promotion->type === 'percentage')
+                                        DISKON {{ $promotion->value }}%
+                                    @else
+                                        POTONGAN HARGA
+                                    @endif
+                                </span>
+                            </div>
+                        @endif
+                        @if ($discountedPrice && $discountedPrice < $product->price)
+                            <div class="mt-2">
+                                <p class="text-xl font-semibold text-slate-400 line-through">
+                                    Rp {{ number_format($product->price, 0, ',', '.') }}
+                                </p>
+                                <p class="text-4xl font-extrabold text-primary-600">
+                                    Rp {{ number_format($discountedPrice, 0, ',', '.') }}
+                                    <span class="text-xl font-semibold text-slate-500">/ {{ $product->unit }}</span>
+                                </p>
+                            </div>
+                        @else
+                            <p class="text-4xl font-extrabold text-primary-600 mt-2">
+                                Rp {{ number_format($product->price, 0, ',', '.') }}
+                                <span class="text-xl font-semibold text-slate-500">/ {{ $product->unit }}</span>
+                            </p>
+                        @endif
                         <p class="text-sm text-slate-500 mt-1">Minimum pemesanan: 1 {{ $product->unit }}</p>
                     </div>
                     <form method="POST" action="{{ route('cart.store') }}">

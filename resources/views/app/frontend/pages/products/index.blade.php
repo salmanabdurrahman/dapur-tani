@@ -178,6 +178,10 @@
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
                             @forelse ($products as $product)
+                                @php
+                                    $discountedPrice = $product->getDiscountedPrice();
+                                @endphp
+
                                 <div
                                     class="bg-white rounded-xl shadow-lg overflow-hidden group transition-all duration-300 hover:shadow-2xl hover:-translate-y-1.5">
                                     <a href="{{ route('products.show', $product) }}" class="block">
@@ -208,10 +212,23 @@
                                             </p>
                                             <div
                                                 class="flex justify-between items-center pt-2 mt-auto border-t border-slate-100">
-                                                <p class="text-lg font-extrabold text-primary-600">
-                                                    Rp{{ number_format($product->price, 0, ',', '.') }}<span
-                                                        class="text-sm font-medium text-slate-500">/{{ $product->unit }}</span>
-                                                </p>
+                                                @if ($discountedPrice && $discountedPrice < $product->price)
+                                                    <div>
+                                                        <p class="text-sm font-semibold text-red-500 line-through">
+                                                            Rp{{ number_format($product->price, 0, ',', '.') }}</p>
+                                                        <p class="text-lg font-extrabold text-primary-600">
+                                                            Rp{{ number_format($discountedPrice, 0, ',', '.') }}
+                                                            <span
+                                                                class="text-sm font-medium text-slate-500">/{{ $product->unit }}</span>
+                                                        </p>
+                                                    </div>
+                                                @else
+                                                    <p class="text-lg font-extrabold text-primary-600">
+                                                        Rp{{ number_format($product->price, 0, ',', '.') }}
+                                                        <span
+                                                            class="text-sm font-medium text-slate-500">/{{ $product->unit }}</span>
+                                                    </p>
+                                                @endif
                                             </div>
                                         </div>
                                     </a>

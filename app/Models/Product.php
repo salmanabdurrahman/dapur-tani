@@ -93,6 +93,39 @@ class Product extends Model implements Buyable
         return $this->weight;
     }
 
+    public function getActivePromotion()
+    {
+        return $this->promotions()
+            ->where('is_active', true)
+            ->where(function ($query) {
+                $query->whereNull('starts_at')
+                    ->orWhere('starts_at', '<=', now());
+            })
+            ->where(function ($query) {
+                $query->whereNull('expires_at')
+                    ->orWhere('expires_at', '>=', now());
+            })
+            ->first();
+    }
+
+    public function getDiscountedPrice()
+    {
+        $promotion = $this->getActivePromotion();
+        if (!$promotion) {
+            return null;
+        }
+
+        if ($promotion->type === 'percentage') {
+            return $this->price - ($this->price * ($promotion->value / 100));
+        }
+
+        if ($promotion->type === 'fixed') {
+            return max(0, $this->price - $promotion->value);
+        }
+
+        return null;
+    }
+
     public function supplier(): BelongsTo
     {
         return $this->belongsTo(User::class, 'supplier_id');
@@ -111,5 +144,10 @@ class Product extends Model implements Buyable
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function promotions(): HasMany
+    {
+        return $this->hasMany(Promotion::class);
     }
 }
