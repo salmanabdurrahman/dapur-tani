@@ -143,7 +143,7 @@
                         <span class="flex-shrink mx-4 text-slate-400 font-semibold text-sm">atau</span>
                         <div class="flex-grow border-t border-slate-200"></div>
                     </div>
-                    <a href="#"
+                    <a href="{{ route('auth.google.redirect') }}"
                         class="mt-4 w-full flex items-center justify-center gap-3 border-2 border-slate-200 py-3 rounded-lg hover:bg-slate-50 transition-colors">
                         <svg class="w-6 h-6" viewBox="0 0 48 48">
                             <path fill="#FFC107"

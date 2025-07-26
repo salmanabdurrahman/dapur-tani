@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\BuyerAuthController;
+use App\Http\Controllers\Auth\BuyerGoogleLoginController;
 use App\Http\Controllers\Buyer\CheckoutController;
 use App\Http\Controllers\Buyer\DashboardController;
 use App\Http\Controllers\Buyer\OrderController;
@@ -37,6 +38,9 @@ Route::middleware('guest')->group(function () {
     Route::get('auth', [BuyerAuthController::class, 'create'])->name('auth.create');
     Route::post('register', [BuyerAuthController::class, 'store'])->name('auth.store');
     Route::post('login', [BuyerAuthController::class, 'login'])->name('auth.login');
+
+    Route::get('/google/redirect', [BuyerGoogleLoginController::class, 'redirectToGoogle'])->name('auth.google.redirect');
+    Route::get('/google/callback', [BuyerGoogleLoginController::class, 'handleGoogleCallback'])->name('auth.google.callback');
 });
 
 Route::post('logout', [BuyerAuthController::class, 'logout'])->name('auth.logout')
