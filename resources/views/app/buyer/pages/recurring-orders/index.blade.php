@@ -77,6 +77,11 @@
                     @endforelse
                 </tbody>
             </table>
+            @if ($recurringOrders->hasPages())
+                <nav class="mt-6 pt-6 border-t border-slate-200">
+                    {{ $recurringOrders->links() }}
+                </nav>
+            @endif
         </div>
     </section>
 @endsection

@@ -16,9 +16,11 @@ class RecurringOrderController extends Controller
      */
     public function index(): View
     {
-        $recurringOrders = Auth::user()->recurringOrders()
+        $recurringOrders = Auth::user()
+            ->recurringOrders()
             ->with('product')
-            ->get();
+            ->orderByDesc('created_at')
+            ->paginate(6);
 
         return view('app.buyer.pages.recurring-orders.index', compact('recurringOrders'));
     }
@@ -41,11 +43,7 @@ class RecurringOrderController extends Controller
         try {
             Auth::user()->recurringOrders()->updateOrCreate(
                 ['product_id' => $validated['product_id']],
-                [
-                    'quantity' => $validated['quantity'],
-                    'frequency' => $validated['frequency'],
-                    'day_of_week' => $validated['day_of_week'],
-                ]
+                $validated
             );
 
             return redirect()->route('buyer.recurring-orders.index')->with('success', 'Jadwal langganan berhasil disimpan!');
