@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Buyer\StoreCheckoutRequest;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
+use App\Notifications\NewOrderNotification;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -93,6 +95,19 @@ class CheckoutController extends Controller
 
             $snapToken = Snap::getSnapToken($params);
             $order->update(['snap_token' => $snapToken]);
+
+            $supplierIds = [];
+            foreach (Cart::content() as $item) {
+                $product = Product::find($item->id);
+                if ($product) {
+                    $supplierIds[$product->supplier_id] = true;
+                }
+            }
+            $suppliers = User::find(array_keys($supplierIds));
+
+            foreach ($suppliers as $supplier) {
+                $supplier->notify(new NewOrderNotification($order));
+            }
 
             DB::commit();
             Cart::destroy();

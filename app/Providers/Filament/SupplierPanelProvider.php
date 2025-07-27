@@ -58,6 +58,8 @@ class SupplierPanelProvider extends PanelProvider
             ->unsavedChangesAlerts()
             ->databaseTransactions()
             ->font('Plus Jakarta Sans')
-            ->darkMode(false);
+            ->darkMode(false)
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('30s');
     }
 }
