@@ -21,8 +21,12 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            InitialDataSeeder::class,
+                // InitialDataSeeder::class,
             SettingSeeder::class,
+            UserSeeder::class,
+            CategorySeeder::class,
+            ProductSeeder::class,
+            OrderSeeder::class,
         ]);
     }
 }
