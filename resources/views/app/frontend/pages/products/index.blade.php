@@ -203,13 +203,16 @@
                                         <div class="p-5 flex flex-col">
                                             <h3 class="text-lg font-bold text-dark mb-1 truncate">{{ $product->name }}
                                             </h3>
-                                            <p class="text-slate-500 text-sm mb-4 truncate flex items-center"><svg
-                                                    class="w-4 h-4 mr-1 text-primary-600" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                                </svg>{{ $product->supplier->profile->business_name ?? $product->supplier->name }}
-                                            </p>
+                                            <a href="{{ route('supplier.profile', $product->supplier) }}"
+                                                class="inline-flex max-w-[140px]">
+                                                <p class="text-slate-500 text-sm mb-4 truncate flex items-center"><svg
+                                                        class="w-4 h-4 mr-1 text-primary-600" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                    </svg>{{ $product->supplier->profile->business_name ?? $product->supplier->name }}
+                                                </p>
+                                            </a>
                                             <div
                                                 class="flex justify-between items-center pt-2 mt-auto border-t border-slate-100">
                                                 @if ($discountedPrice && $discountedPrice < $product->price)

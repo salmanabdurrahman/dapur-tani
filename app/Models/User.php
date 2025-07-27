@@ -94,4 +94,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany(RecurringOrder::class);
     }
+
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class, 'supplier_id');
+    }
 }

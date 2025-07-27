@@ -149,7 +149,7 @@
                                 alt="Logo Pemasok" class="w-14 h-14 rounded-full border-2 border-white shadow-md"
                                 loading="lazy">
                             <div class="ml-4">
-                                <a href="#"
+                                <a href="{{ route('supplier.profile', $product->supplier) }}"
                                     class="font-bold text-dark hover:text-primary-600 transition-colors">{{ $product->supplier->profile->business_name ?? $product->supplier->name }}</a>
                                 <div class="flex items-center text-sm text-slate-500 mt-1">
                                     <svg class="w-4 h-4 text-amber-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
