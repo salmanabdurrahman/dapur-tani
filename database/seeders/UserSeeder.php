@@ -48,6 +48,21 @@ class UserSeeder extends Seeder
                 'email' => 'karyo@gmail.com',
                 'profile' => ['business_name' => 'Sumber Daging Gunungkidul', 'city' => 'Gunungkidul', 'province' => 'DI Yogyakarta', 'address' => 'Jl. Wonosari, Playen, Gunungkidul', 'phone_number' => '081234567894', 'bank_name' => 'BNI', 'bank_account_number' => '5566778899', 'bank_account_name' => 'Karyo']
             ],
+            [
+                'name' => 'Bu Wati',
+                'email' => 'wati@gmail.com',
+                'profile' => ['business_name' => 'Wati Fresh Sayur', 'city' => 'Sleman', 'province' => 'DI Yogyakarta', 'address' => 'Jl. Kaliurang KM 10', 'phone_number' => '081234567895', 'bank_name' => 'BCA', 'bank_account_number' => '2233445566', 'bank_account_name' => 'Wati']
+            ],
+            [
+                'name' => 'Mas Eko',
+                'email' => 'eko@gmail.com',
+                'profile' => ['business_name' => 'Peternakan Eko Farm', 'city' => 'Bantul', 'province' => 'DI Yogyakarta', 'address' => 'Jl. Parangtritis KM 5', 'phone_number' => '081234567896', 'bank_name' => 'Mandiri', 'bank_account_number' => '6677889900', 'bank_account_name' => 'Eko']
+            ],
+            [
+                'name' => 'Mbak Rini',
+                'email' => 'rini@gmail.com',
+                'profile' => ['business_name' => 'Rini Agro Lestari', 'city' => 'Gunungkidul', 'province' => 'DI Yogyakarta', 'address' => 'Jl. Baron KM 8', 'phone_number' => '081234567897', 'bank_name' => 'BRI', 'bank_account_number' => '3344556677', 'bank_account_name' => 'Rini']
+            ],
         ];
 
         foreach ($suppliers as $supplierData) {
@@ -84,6 +99,46 @@ class UserSeeder extends Seeder
                 'name' => 'Sari (Cafe)',
                 'email' => 'sari@cafe.com',
                 'profile' => ['business_name' => 'Kopi Senja', 'city' => 'Bantul', 'province' => 'DI Yogyakarta', 'address' => 'Jl. Bantul KM 7', 'phone_number' => '085678912348']
+            ],
+            [
+                'name' => 'Bayu (Chef)',
+                'email' => 'bayu@kuliner.com',
+                'profile' => ['business_name' => 'Dapoer Bayu', 'city' => 'Sleman', 'province' => 'DI Yogyakarta', 'address' => 'Jl. Magelang KM 6', 'phone_number' => '085678912349']
+            ],
+            [
+                'name' => 'Intan (UMKM)',
+                'email' => 'intan@umkm.com',
+                'profile' => ['business_name' => 'Warung Intan', 'city' => 'Bantul', 'province' => 'DI Yogyakarta', 'address' => 'Jl. Ringroad Selatan', 'phone_number' => '085678912350']
+            ],
+            [
+                'name' => 'Dwi (Catering)',
+                'email' => 'dwi@catering.com',
+                'profile' => ['business_name' => 'Catering Harapan', 'city' => 'Yogyakarta', 'province' => 'DI Yogyakarta', 'address' => 'Jl. Colombo', 'phone_number' => '085678912351']
+            ],
+            [
+                'name' => 'Yusuf (Resto)',
+                'email' => 'yusuf@resto.com',
+                'profile' => ['business_name' => 'Resto Lesehan Yusuf', 'city' => 'Sleman', 'province' => 'DI Yogyakarta', 'address' => 'Jl. Affandi', 'phone_number' => '085678912352']
+            ],
+            [
+                'name' => 'Maya (Cafe)',
+                'email' => 'maya@cafe.com',
+                'profile' => ['business_name' => 'Cafe Kopi Maya', 'city' => 'Gunungkidul', 'province' => 'DI Yogyakarta', 'address' => 'Jl. Pathuk', 'phone_number' => '085678912353']
+            ],
+            [
+                'name' => 'Hadi (Pengusaha)',
+                'email' => 'hadi@usaha.com',
+                'profile' => ['business_name' => 'Usaha Hadi Jaya', 'city' => 'Kulon Progo', 'province' => 'DI Yogyakarta', 'address' => 'Jl. Wates Barat', 'phone_number' => '085678912354']
+            ],
+            [
+                'name' => 'Rina (Resto)',
+                'email' => 'rina2@resto.com',
+                'profile' => ['business_name' => 'Resto Rina Spesial', 'city' => 'Yogyakarta', 'province' => 'DI Yogyakarta', 'address' => 'Jl. Monjali', 'phone_number' => '085678912355']
+            ],
+            [
+                'name' => 'Tono (Cafe)',
+                'email' => 'tono@cafe.com',
+                'profile' => ['business_name' => 'Cafe Tono Jaya', 'city' => 'Sleman', 'province' => 'DI Yogyakarta', 'address' => 'Jl. Kaliurang KM 9', 'phone_number' => '085678912356']
             ],
         ];
 
