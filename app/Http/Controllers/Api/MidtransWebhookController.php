@@ -15,34 +15,40 @@ class MidtransWebhookController extends Controller
 {
     public function handle(Request $request)
     {
-        Config::$serverKey = config('services.midtrans.server_key');
-        Config::$isProduction = config('services.midtrans.is_production', false);
+        $payload = $request->all();
+        $serverKey = config('services.midtrans.server_key');
 
         try {
-            $notification = new Notification();
+            $signature = hash('sha512', $payload['order_id'] . $payload['status_code'] . $payload['gross_amount'] . $serverKey);
 
-            $orderId = $notification->order_id;
-            $transactionStatus = $notification->transaction_status;
-            $fraudStatus = $notification->fraud_status;
+            if ($signature !== $payload['signature_key']) {
+                Log::error('Midtrans Webhook: Invalid signature key.');
+
+                return response()->json([
+                    'message' => 'Invalid signature'
+                ], 403);
+            }
+
+            $orderId = $payload['order_id'];
+            $transactionStatus = $payload['transaction_status'];
+            $fraudStatus = $payload['fraud_status'];
 
             $order = Order::where('order_number', $orderId)->first();
 
             if (!$order) {
                 Log::warning("Webhook Ignored: Order not found for order_id {$orderId}");
 
-                return response()
-                    ->json([
-                        'message' => 'Order not found'
-                    ], 404);
+                return response()->json([
+                    'message' => 'Order not found'
+                ], 404);
             }
 
-            if ($order->status !== OrderStatus::PENDING_PAYMENT->value) {
+            if ($order->status->value !== 'pending_payment') {
                 Log::info("Webhook Ignored: Order {$orderId} status is not pending payment.");
 
-                return response()
-                    ->json([
-                        'message' => 'Order status is not pending payment'
-                    ]);
+                return response()->json([
+                    'message' => 'Order status is not pending payment'
+                ]);
             }
 
             if ($transactionStatus == 'settlement' || ($transactionStatus == 'capture' && $fraudStatus == 'accept')) {
@@ -64,9 +70,9 @@ class MidtransWebhookController extends Controller
             return response()->json([
                 'message' => 'Webhook processed successfully'
             ]);
-        } catch (\Exception $e) {
-            Log::error("Midtrans Webhook Error: " . $e->getMessage());
 
+        } catch (\Exception $e) {
+            Log::error("Midtrans Webhook Error: " . $e->getMessage(), ['payload' => $payload]);
             return response()->json([
                 'message' => 'Error processing webhook'
             ], 500);
