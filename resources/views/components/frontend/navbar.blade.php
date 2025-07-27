@@ -29,6 +29,9 @@
                             class="hover:text-primary-600 block px-4 py-2 hover:bg-slate-50">Daging & Unggas</a>
                     </div>
                 </div>
+                <a href="{{ route('insights.index') }}"
+                    class="px-3 py-2 font-semibold transition-colors {{ request()->is('insights') ? 'text-primary-600' : 'text-dark hover:text-primary-600' }}">Tren
+                    Produk</a>
                 <a href="{{ route('about-us') }}"
                     class="px-3 py-2 font-semibold transition-colors {{ request()->is('about-us') ? 'text-primary-600' : 'text-dark hover:text-primary-600' }}">Tentang</a>
                 <a href="{{ route('contact.index') }}"
@@ -78,6 +81,9 @@
                 class="block rounded-md px-4 py-2 font-semibold {{ request()->is('/') ? 'text-primary-600' : 'hover:text-primary-600 text-dark' }}">Beranda</a>
             <a href="{{ route('products.index') }}"
                 class="block rounded-md px-4 py-2 font-semibold {{ request()->is('products*') ? 'text-primary-600' : 'hover:text-primary-600 text-dark' }}">Kategori</a>
+            <a href="{{ route('insights.index') }}"
+                class="block rounded-md px-4 py-2 font-semibold {{ request()->is('insights') ? 'text-primary-600' : 'hover:text-primary-600 text-dark' }}">Tren
+                Produk</a>
             <a href="{{ route('about-us') }}"
                 class=" block rounded-md px-4 py-2 font-semibold {{ request()->is('about-us') ? 'text-primary-600' : 'hover:text-primary-600 text-dark' }}">Tentang</a>
             <a href="{{ route('contact.index') }}"

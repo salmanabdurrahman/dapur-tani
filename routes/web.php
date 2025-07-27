@@ -12,6 +12,7 @@ use App\Http\Controllers\Frontend\AboutUsController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\InsightController;
 use App\Http\Controllers\Frontend\ProductController;
 use App\Http\Controllers\Frontend\SubscriptionController;
 use App\Http\Controllers\Frontend\SupplierProfileController;
@@ -25,8 +26,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::resource('products', ProductController::class)->only(['index', 'show']);
-Route::get('/supplier/{supplier}', [SupplierProfileController::class, 'show'])->name('supplier.profile');
+Route::get('supplier/{supplier}', [SupplierProfileController::class, 'show'])->name('supplier.profile');
 Route::resource('cart', CartController::class)->only(['index', 'store', 'update', 'destroy']);
+Route::get('insights', [InsightController::class, 'index'])->name('insights.index');
 Route::get('about-us', [AboutUsController::class, 'index'])->name('about-us');
 Route::resource('contact', ContactController::class)->only(['index', 'store']);
 Route::post('subscriptions', [SubscriptionController::class, 'store'])->name('subscriptions.store');
@@ -42,8 +44,8 @@ Route::middleware('guest')->group(function () {
     Route::post('register', [BuyerAuthController::class, 'store'])->name('auth.store');
     Route::post('login', [BuyerAuthController::class, 'login'])->name('auth.login');
 
-    Route::get('/google/redirect', [BuyerGoogleLoginController::class, 'redirectToGoogle'])->name('auth.google.redirect');
-    Route::get('/google/callback', [BuyerGoogleLoginController::class, 'handleGoogleCallback'])->name('auth.google.callback');
+    Route::get('google/redirect', [BuyerGoogleLoginController::class, 'redirectToGoogle'])->name('auth.google.redirect');
+    Route::get('google/callback', [BuyerGoogleLoginController::class, 'handleGoogleCallback'])->name('auth.google.callback');
 });
 
 Route::post('logout', [BuyerAuthController::class, 'logout'])->name('auth.logout')
