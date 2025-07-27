@@ -63,7 +63,7 @@ class OrderController extends Controller
         $order = Order::find($id);
 
         if (!$order || $order->buyer_id !== auth()->id()) {
-            return redirect()->route('buyer.orders.index');
+            return redirect()->route('buyer.orders.index')->with('error', 'Order tidak ditemukan atau Anda tidak memiliki akses.');
         }
 
         $order->load('items.product');
