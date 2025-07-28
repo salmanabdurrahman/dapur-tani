@@ -72,12 +72,17 @@
                                 {{-- <a href="#" class="text-sm font-semibold text-primary-600 hover:underline">Lupa
                         Password?</a> --}}
                             </div>
-                            <div class="relative mt-2">
+                            <div class="relative mt-2" x-data="{ show: false }">
                                 <i
                                     class='bx bx-lock-alt absolute left-4 top-1/2 -translate-y-1/2 text-xl text-slate-400'></i>
-                                <input type="password" id="login-password" name="password" placeholder="Kata Sandi Anda"
-                                    class="w-full pl-12 pr-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
+                                <input :type="show ? 'text' : 'password'" id="login-password" name="password"
+                                    placeholder="Kata Sandi Anda"
+                                    class="w-full pl-12 pr-12 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
                                     value="{{ old('password') }}" required>
+                                <button type="button" @click="show = !show"
+                                    class="absolute right-4 top-1/2 -translate-y-1/2 text-xl text-slate-400 focus:outline-none">
+                                    <i :class="show ? 'bx bx-show' : 'bx bx-hide'"></i>
+                                </button>
                             </div>
                             @error('password')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -121,15 +126,38 @@
                         </div>
                         <div>
                             <label for="register-password" class="font-semibold text-dark">Kata Sandi</label>
-                            <div class="relative mt-2">
+                            <div class="relative mt-2" x-data="{ show: false }">
                                 <i
                                     class='bx bx-lock-alt absolute left-4 top-1/2 -translate-y-1/2 text-xl text-slate-400'></i>
-                                <input type="password" id="register-password" name="password"
+                                <input :type="show ? 'text' : 'password'" id="register-password" name="password"
                                     placeholder="Minimal 8 karakter"
-                                    class="w-full pl-12 pr-4 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
+                                    class="w-full pl-12 pr-12 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
                                     value="{{ old('password') }}" required>
+                                <button type="button" @click="show = !show"
+                                    class="absolute right-4 top-1/2 -translate-y-1/2 text-xl text-slate-400 focus:outline-none">
+                                    <i :class="show ? 'bx bx-show' : 'bx bx-hide'"></i>
+                                </button>
                             </div>
                             @error('password')
+                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div>
+                            <label for="register-password_confirmation" class="font-semibold text-dark">Konfirmasi
+                                Kata Sandi</label>
+                            <div class="relative mt-2" x-data="{ show: false }">
+                                <i
+                                    class='bx bx-lock-alt absolute left-4 top-1/2 -translate-y-1/2 text-xl text-slate-400'></i>
+                                <input :type="show ? 'text' : 'password'" id="register-password_confirmation"
+                                    name="password_confirmation" placeholder="Konfirmasi Kata Sandi"
+                                    class="w-full pl-12 pr-12 py-3 border border-primary-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 focus:outline-primary-500"
+                                    required>
+                                <button type="button" @click="show = !show"
+                                    class="absolute right-4 top-1/2 -translate-y-1/2 text-xl text-slate-400 focus:outline-none">
+                                    <i :class="show ? 'bx bx-show' : 'bx bx-hide'"></i>
+                                </button>
+                            </div>
+                            @error('password_confirmation')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
