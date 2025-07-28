@@ -61,6 +61,7 @@ Route::middleware('role:buyer')->prefix('buyer')->name('buyer.')->group(function
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('orders', OrderController::class)->only(['index', 'show']);
     Route::post('orders/{order}/review', [ReviewController::class, 'store'])->name('orders.review.store');
+    Route::get('orders/{order}/invoice', [OrderController::class, 'printInvoice'])->name('orders.invoice');
     Route::resource('recurring-orders', RecurringOrderController::class)->only(['index', 'store', 'destroy']);
     Route::get('settings', [ProfileController::class, 'edit'])->name('settings.edit');
     Route::put('settings/profile', [ProfileController::class, 'updateProfile'])->name('settings.updateProfile');

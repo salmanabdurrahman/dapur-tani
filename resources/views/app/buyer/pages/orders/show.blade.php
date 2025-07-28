@@ -15,14 +15,14 @@
                 <p class="text-slate-500 mt-1">Dipesan pada {{ $order->created_at->format('d F Y') }}</p>
             </div>
             <div class="flex items-center gap-2">
-                <a href="#"
+                <a href="{{ route('buyer.orders.invoice', $order) }}" target="_blank"
                     class="bg-slate-200 text-dark font-bold px-4 py-2.5 rounded-lg hover:bg-slate-300 transition-colors flex items-center gap-2">
                     <i class='bx bxs-printer text-xl'></i><span>Cetak Invoice</span>
                 </a>
-                <a href="#"
+                {{-- <a href="#"
                     class="bg-primary-600 text-white font-bold px-4 py-2.5 rounded-lg hover:bg-primary-700 transition-colors flex items-center gap-2">
                     <i class='bx bx-revision text-xl'></i><span>Pesan Lagi</span>
-                </a>
+                </a> --}}
             </div>
         </div>
     </section>

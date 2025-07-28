@@ -3,9 +3,12 @@
 namespace App\Filament\Supplier\Resources;
 
 use App\Enums\OrderStatus;
+use App\Exports\OrdersExport;
+use App\Filament\Exports\OrderExporter;
 use App\Filament\Supplier\Resources\OrderResource\Pages;
 use App\Filament\Supplier\Resources\OrderResource\RelationManagers;
 use App\Models\Order;
+use Filament\Tables\Actions\ExportAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -119,6 +122,13 @@ class OrderResource extends Resource
             ])
             ->filters([
                 //
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->label('Ekspor ke Excel (CSV)')
+                    ->color('primary')
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->exporter(OrderExporter::class),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([

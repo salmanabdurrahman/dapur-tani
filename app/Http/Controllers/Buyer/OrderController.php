@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Buyer;
 use App\Enums\OrderStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class OrderController extends Controller
@@ -93,5 +95,18 @@ class OrderController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function printInvoice(Order $order)
+    {
+        if ($order->buyer_id !== Auth::id()) {
+            return redirect()->route('buyer.orders.index')->with('error', 'Anda tidak memiliki akses untuk mencetak invoice ini.');
+        }
+
+        $order->load('items.product', 'buyer.profile');
+
+        $pdf = Pdf::loadView('pdf.invoice', compact('order'));
+
+        return $pdf->stream('invoice-' . $order->order_number . '.pdf');
     }
 }
