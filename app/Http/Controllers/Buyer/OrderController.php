@@ -64,7 +64,7 @@ class OrderController extends Controller
     {
         $order = Order::find($id);
 
-        if (!$order || $order->buyer_id !== auth()->id()) {
+        if (!$order || $order->buyer_id != auth()->id()) {
             return redirect()->route('buyer.orders.index')->with('error', 'Order tidak ditemukan atau Anda tidak memiliki akses.');
         }
 
@@ -99,7 +99,7 @@ class OrderController extends Controller
 
     public function printInvoice(Order $order)
     {
-        if ($order->buyer_id !== Auth::id()) {
+        if ($order->buyer_id != Auth::id()) {
             return redirect()->route('buyer.orders.index')->with('error', 'Anda tidak memiliki akses untuk mencetak invoice ini.');
         }
 

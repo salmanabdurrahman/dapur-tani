@@ -13,7 +13,7 @@ class StoreReviewRequest extends FormRequest
     {
         $order = $this->route('order');
 
-        return $order && $this->user()->id === $order->buyer_id;
+        return $order && $this->user()->id == $order->buyer_id;
     }
 
     /**
