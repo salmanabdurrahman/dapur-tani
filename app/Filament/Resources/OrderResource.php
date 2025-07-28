@@ -23,7 +23,7 @@ class OrderResource extends Resource
     protected static ?string $pluralModelLabel = 'Semua Pesanan';
     protected static ?string $label = 'Pesanan';
     protected static ?string $pluralLabel = 'Pesanan';
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 7;
 
     public static function canCreate(): bool
     {

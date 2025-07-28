@@ -7,6 +7,7 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\UserMenuItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -60,6 +61,14 @@ class SupplierPanelProvider extends PanelProvider
             ->font('Plus Jakarta Sans')
             ->darkMode(false)
             ->databaseNotifications()
-            ->databaseNotificationsPolling('30s');
+            ->databaseNotificationsPolling('30s')
+            ->userMenuItems([
+                'logout' => UserMenuItem::make()
+                    ->label('Keluar'),
+                'home' => UserMenuItem::make()
+                    ->label('Beranda')
+                    ->icon('heroicon-o-home')
+                    ->url('/'),
+            ]);
     }
 }

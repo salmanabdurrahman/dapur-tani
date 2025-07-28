@@ -24,7 +24,7 @@ class RecurringOrderResource extends Resource
     protected static ?string $pluralModelLabel = 'Pesanan Langganan';
     protected static ?string $label = 'Pesanan Langganan';
     protected static ?string $pluralLabel = 'Pesanan Langganan';
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 8;
 
     public static function canCreate(): bool
     {
@@ -86,11 +86,17 @@ class RecurringOrderResource extends Resource
                     ->preload(),
             ])
             ->actions([
-                Tables\Actions\DeleteAction::make()->label('Hentikan Langganan'),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\DeleteAction::make()->label('Hentikan Langganan'),
+                    Tables\Actions\ForceDeleteAction::make()->label('Hapus Permanen'),
+                    Tables\Actions\RestoreAction::make()->label('Pulihkan Langganan'),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }

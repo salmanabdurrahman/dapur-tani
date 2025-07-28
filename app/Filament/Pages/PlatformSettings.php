@@ -17,7 +17,7 @@ class PlatformSettings extends Page
     protected static ?string $pluralModelLabel = 'Pengaturan';
     protected static ?string $label = 'Pengaturan';
     protected static ?string $pluralLabel = 'Pengaturan';
-    protected static ?int $navigationSort = 8;
+    protected static ?int $navigationSort = 10;
     protected static string $view = 'filament.pages.platform-settings';
     protected static ?string $title = 'Pengaturan Platform';
 
